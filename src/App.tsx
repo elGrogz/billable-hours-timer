@@ -20,17 +20,15 @@ function App() {
     let tempTasks = [...tasks];
     tempTasks.push(blankTask);
     setTasks(tempTasks);
-    console.log(tasks);
   };
 
   const removeTask = (task: Task) => {
     const indexToUpdate = tasks.indexOf(task);
+    console.log(indexToUpdate);
     let tempTasks = [...tasks];
     tempTasks.splice(indexToUpdate, 1);
     setTasks(tempTasks);
   };
-
-  // const startTimer = () => {};
 
   return (
     <div>
