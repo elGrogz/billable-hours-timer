@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Task from "./components/Task";
 import logo from "./logo.svg";
 import "./App.css";
 
@@ -10,7 +11,7 @@ interface Task {
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
-  const addNewTask = () => {
+  const addNewTask = (): void => {
     const blankTask: Task = {
       name: "hello",
       time: 0,
@@ -19,6 +20,7 @@ function App() {
     let tempTasks = [...tasks];
     tempTasks.push(blankTask);
     setTasks(tempTasks);
+    console.log(tasks);
   };
 
   const removeTask = (task: Task) => {
@@ -28,18 +30,24 @@ function App() {
     setTasks(tempTasks);
   };
 
+  // const startTimer = () => {};
+
   return (
     <div>
       <button onClick={() => addNewTask()}>Add new task</button>
       <div>
-        {tasks.map((task, index) => (
-          <div className="flex justify-center" key={index}>
-            <div>
-              {task.name} {index}
-            </div>
-            <button onClick={() => removeTask(task)}>Remove task</button>
-          </div>
-        ))}
+        {tasks.length > 0
+          ? tasks.map((task, index) => (
+              <Task
+                key={index}
+                name={task.name}
+                time={task.time}
+                handleRemoveTask={() => {
+                  removeTask(task);
+                }}
+              />
+            ))
+          : null}
       </div>
     </div>
   );
