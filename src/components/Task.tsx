@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 const Task = (props: any) => {
+  const [taskName, setTaskName] = useState<string>("");
   const [isActive, setIsActive] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(true);
   const [time, setTime] = useState<number>(0);
@@ -36,8 +37,14 @@ const Task = (props: any) => {
 
   return (
     <div>
-      <div>{props.name}: </div>
       <div style={{ display: "flex", flexDirection: "row" }}>
+        <input
+          onChange={(event: React.ChangeEvent<HTMLInputElement>): void =>
+            setTaskName(event.target.value)
+          }
+          placeholder="Enter task name..."
+        ></input>
+        <div>{taskName}</div>
         <div className="stopwatch">
           <div className="numbers">
             <span>{("0" + Math.floor((time / 86400000) % 24)).slice(-2)}:</span>

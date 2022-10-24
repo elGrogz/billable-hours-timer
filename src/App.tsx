@@ -3,26 +3,23 @@ import Task from "./components/Task";
 import logo from "./logo.svg";
 import "./App.css";
 
-interface Task {
-  name: string;
-  time: number;
-}
+// interface Task {
+//   name: string;
+//   time: number;
+// }
 
 function App() {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<{}[]>([]);
 
   const addNewTask = (): void => {
-    const blankTask: Task = {
-      name: "hello",
-      time: 0,
-    };
+    const blankTask: {} = {};
 
     let tempTasks = [...tasks];
     tempTasks.push(blankTask);
     setTasks(tempTasks);
   };
 
-  const removeTask = (task: Task) => {
+  const removeTask = (task: {}) => {
     const indexToUpdate = tasks.indexOf(task);
     console.log(indexToUpdate);
     let tempTasks = [...tasks];
@@ -38,8 +35,6 @@ function App() {
           ? tasks.map((task, index) => (
               <Task
                 key={index}
-                name={task.name}
-                time={task.time}
                 handleRemoveTask={() => {
                   removeTask(task);
                 }}
