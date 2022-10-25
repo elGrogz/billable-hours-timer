@@ -37,14 +37,15 @@ const Task = (props: any) => {
 
   return (
     <div>
-      <div style={{ display: "flex", flexDirection: "row" }}>
+      <div style={{ display: "flex", flexDirection: "row", marginTop: 5 }}>
         <input
+          maxLength={25}
           onChange={(event: React.ChangeEvent<HTMLInputElement>): void =>
             setTaskName(event.target.value)
           }
           placeholder="Enter task name..."
         ></input>
-        <div>{taskName}</div>
+        <div style={{ width: 200 }}>{taskName}</div>
         <div className="stopwatch">
           <div className="numbers">
             <span>{("0" + Math.floor((time / 86400000) % 24)).slice(-2)}:</span>
