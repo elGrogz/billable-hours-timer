@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import Task from "./components/Task";
-import logo from "./logo.svg";
 import "./App.css";
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, push, ref, set } from "firebase/database";
+import { TaskType } from "./types/TaskType";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -28,20 +28,25 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
+
 // const analytics = getAnalytics(app);
 
-function writeTaskData(task: any) {
+const writeTaskData = (task: TaskType) => {
   set(ref(database, "tasks/" + task.id), {
     name: task.name,
     time: task.time,
   });
-}
+};
 
-function App() {
-  const [tasks, setTasks] = useState<{}[]>([]);
+const removeTaskData = (task: TaskType) => {
+  set(ref(database, "tasks/" + task.id), null);
+};
+
+const App = () => {
+  const [tasks, setTasks] = useState<TaskType[]>([]);
 
   const addNewTask = (): void => {
-    const blankTask: {} = {
+    const blankTask: TaskType = {
       id: Date.now(),
       name: "",
       time: 0,
@@ -53,12 +58,13 @@ function App() {
     writeTaskData(blankTask);
   };
 
-  const removeTask = (task: {}) => {
+  const removeTask = (task: TaskType) => {
     const indexToUpdate = tasks.indexOf(task);
-    console.log(indexToUpdate);
+    console.log("HELLO!");
     let tempTasks = [...tasks];
     tempTasks.splice(indexToUpdate, 1);
     setTasks(tempTasks);
+    removeTaskData(task);
   };
 
   return (
@@ -78,6 +84,6 @@ function App() {
       </div>
     </div>
   );
-}
+};
 
 export default App;

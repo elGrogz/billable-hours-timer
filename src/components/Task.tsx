@@ -1,4 +1,4 @@
-import React, { FC, ReactComponentElement, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 type TimerProps = {
   handleRemoveTask: () => void;
