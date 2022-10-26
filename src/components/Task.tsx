@@ -1,6 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, ReactComponentElement, useEffect, useState } from "react";
 
-const Task = (props: any) => {
+type TimerProps = {
+  handleRemoveTask: () => void;
+};
+
+const Task = (props: TimerProps) => {
   const [taskName, setTaskName] = useState<string>("");
   const [isActive, setIsActive] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(true);
