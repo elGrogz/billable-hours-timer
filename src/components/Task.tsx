@@ -41,7 +41,15 @@ const Task = (props: TimerProps) => {
 
   return (
     <div>
-      <div style={{ display: "flex", flexDirection: "row", marginTop: 5 }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          marginTop: 5,
+          border: "5px solid",
+          borderRadius: "50px",
+        }}
+      >
         <input
           maxLength={25}
           onChange={(event: React.ChangeEvent<HTMLInputElement>): void =>
