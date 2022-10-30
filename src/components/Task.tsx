@@ -43,7 +43,7 @@ const Task = (props: TimerProps) => {
     <div>
       <div
         style={{
-          display: "flex",
+          display: "inline-flex",
           flexDirection: "row",
           marginTop: 5,
           border: "5px solid",
