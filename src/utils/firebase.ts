@@ -50,13 +50,21 @@ export const signInWithGoogle = () => {
   try {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
-        // const user = credential?.user;
         console.log("result", result);
-        // return user;
+        // const name = result.user.displayName;
+        // const email = result.user.email;
+        // const profilePic = result.user.photoURL;
+
+        const user = result.user;
+
+        get(child(ref(database), `users/${user.uid}`)).then((snapshot) => {
+          if (snapshot.exists()) {
+            console.log(snapshot.val());
+          } else {
+            console.log("No data available");
+          }
+        });
       })
-      // .then((userData) => {
-      //   console.log("userData", userData);
-      // })
       .catch((error) => {
         console.log(error);
       });
