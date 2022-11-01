@@ -51,17 +51,25 @@ export const signInWithGoogle = () => {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
         console.log("result", result);
-        // const name = result.user.displayName;
-        // const email = result.user.email;
-        // const profilePic = result.user.photoURL;
-
         const user = result.user;
+        const userUid = result.user.uid;
+        const userDisplayName = result.user.displayName;
+        const userEmail = result.user.email;
+        const userPhotoUrl = result.user.photoURL;
 
         get(child(ref(database), `users/${user.uid}`)).then((snapshot) => {
           if (snapshot.exists()) {
-            console.log(snapshot.val());
+            console.log("snapshot: ", snapshot.val());
           } else {
             console.log("No data available");
+            console.log("user displayname: ", userDisplayName);
+            console.log("user email: ", userEmail);
+            console.log("user photo: ", userPhotoUrl);
+            set(ref(database, `users/${userUid}`), {
+              displayName: userDisplayName,
+              email: userEmail,
+              photoUrl: userPhotoUrl,
+            });
           }
         });
       })
