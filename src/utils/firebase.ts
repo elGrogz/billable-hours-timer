@@ -8,19 +8,10 @@ import {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   signOut,
+  User,
 } from "firebase/auth";
-import {
-  getFirestore,
-  query,
-  getDocs,
-  collection,
-  where,
-  addDoc,
-} from "firebase/firestore";
 import { getDatabase, get, ref, set, child } from "firebase/database";
 import { TaskType } from "../types/TaskType";
-import { resolve } from "path";
-import { UserType } from "../types/UserType";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -47,8 +38,8 @@ const auth = getAuth(app);
 
 const googleProvider = new GoogleAuthProvider();
 
-export const signInWithGoogle = (): UserType | undefined => {
-  try {
+export const signInWithGoogle = async (): Promise<User | undefined> => {
+  return new Promise((resolve, reject) => {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
         console.log("result", result);
@@ -60,13 +51,9 @@ export const signInWithGoogle = (): UserType | undefined => {
 
         get(child(ref(database), `users/${user.uid}`)).then((snapshot) => {
           if (snapshot.exists()) {
-            console.log("snapshot: ", snapshot.val());
+            console.log("user already exists: ", snapshot.val());
 
-            return {
-              userDisplayName,
-              userEmail,
-              userPhotoUrl,
-            };
+            resolve(user);
           } else {
             console.log("No data available");
             console.log("user displayname: ", userDisplayName);
@@ -78,22 +65,15 @@ export const signInWithGoogle = (): UserType | undefined => {
               photoUrl: userPhotoUrl,
             });
 
-            return {
-              userDisplayName,
-              userEmail,
-              userPhotoUrl,
-            };
+            resolve(user);
           }
         });
       })
       .catch((error) => {
         console.log(error);
+        reject(undefined);
       });
-  } catch (error: any) {
-    console.error(error);
-    alert(error.message);
-    return undefined;
-  }
+  });
 };
 
 export const writeTaskData = (task: TaskType) => {

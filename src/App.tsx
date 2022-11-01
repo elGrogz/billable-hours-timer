@@ -2,18 +2,19 @@ import { useState } from "react";
 import Task from "./components/Task";
 import "./App.css";
 import { TaskType } from "./types/TaskType";
-import { UserType } from "./types/UserType";
 import {
   signInWithGoogle,
   writeTaskData,
   removeTaskData,
 } from "./utils/firebase";
+import { User } from "firebase/auth";
+import { isUser } from "./types/UserType";
 
 const App = () => {
   const [tasks, setTasks] = useState<TaskType[]>([]);
-  const [displayName, setDisplayName] = useState<string>("");
-  const [tasks, setTasks] = useState<TaskType[]>([]);
-  const [tasks, setTasks] = useState<TaskType[]>([]);
+  const [displayName, setDisplayName] = useState<string | null>("");
+  // const [tasks, setTasks] = useState<TaskType[]>([]);
+  // const [tasks, setTasks] = useState<TaskType[]>([]);
 
   const addNewTask = (): void => {
     const blankTask: TaskType = {
@@ -37,17 +38,21 @@ const App = () => {
   };
 
   // function to do google auth and get user data back from firebase
-  const handleSignInWithGoogle = () => {
-    const response = signInWithGoogle();
+  const handleSignInWithGoogle = async () => {
+    console.log("ONE");
+    const response = await signInWithGoogle();
+    console.log("TWO");
 
-    if (response instanceof UserType) {
-      setDisplayName(response.userDisplayName);
+    if (isUser(response)) {
+      console.log("THREE");
+      setDisplayName(response.displayName);
+      console.log("FOUR");
     }
   };
 
   return (
     <div>
-      <button onClick={signInWithGoogle}>Sign in!</button>
+      <button onClick={handleSignInWithGoogle}>Sign in!</button>
       <button onClick={() => addNewTask()}>Add new task</button>
       <div>
         {tasks.length > 0
