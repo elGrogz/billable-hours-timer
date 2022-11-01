@@ -20,6 +20,7 @@ import {
 import { getDatabase, get, ref, set, child } from "firebase/database";
 import { TaskType } from "../types/TaskType";
 import { resolve } from "path";
+import { UserType } from "../types/UserType";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -46,7 +47,7 @@ const auth = getAuth(app);
 
 const googleProvider = new GoogleAuthProvider();
 
-export const signInWithGoogle = () => {
+export const signInWithGoogle = (): UserType | undefined => {
   try {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
@@ -60,6 +61,12 @@ export const signInWithGoogle = () => {
         get(child(ref(database), `users/${user.uid}`)).then((snapshot) => {
           if (snapshot.exists()) {
             console.log("snapshot: ", snapshot.val());
+
+            return {
+              userDisplayName,
+              userEmail,
+              userPhotoUrl,
+            };
           } else {
             console.log("No data available");
             console.log("user displayname: ", userDisplayName);
@@ -70,43 +77,22 @@ export const signInWithGoogle = () => {
               email: userEmail,
               photoUrl: userPhotoUrl,
             });
+
+            return {
+              userDisplayName,
+              userEmail,
+              userPhotoUrl,
+            };
           }
         });
       })
       .catch((error) => {
         console.log(error);
       });
-
-    // const dbRef = ref(database);
-    // get(child(dbRef, `users/${userData.user}`))
-    //   .then((snapshot) => {
-    //     if (snapshot.exists()) {
-    //       console.log(snapshot.val());
-    //     } else {
-    //       console.log("No data available");
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
-
-    //   const user = res.user;
-    //   const q = query(
-    //     collection(database, "users"),
-    //     where("uid", "==", user.uid)
-    //   );
-    //   const docs = await getDocs(q);
-    //   if (docs.docs.length === 0) {
-    //     await addDoc(collection(db, "users"), {
-    //       uid: user.uid,
-    //       name: user.displayName,
-    //       authProvider: "google",
-    //       email: user.email,
-    //     });
-    //   }
-  } catch (err) {
-    console.error(err);
-    // alert(err.message);
+  } catch (error: any) {
+    console.error(error);
+    alert(error.message);
+    return undefined;
   }
 };
 

@@ -2,6 +2,7 @@ import { useState } from "react";
 import Task from "./components/Task";
 import "./App.css";
 import { TaskType } from "./types/TaskType";
+import { UserType } from "./types/UserType";
 import {
   signInWithGoogle,
   writeTaskData,
@@ -9,6 +10,9 @@ import {
 } from "./utils/firebase";
 
 const App = () => {
+  const [tasks, setTasks] = useState<TaskType[]>([]);
+  const [displayName, setDisplayName] = useState<string>("");
+  const [tasks, setTasks] = useState<TaskType[]>([]);
   const [tasks, setTasks] = useState<TaskType[]>([]);
 
   const addNewTask = (): void => {
@@ -30,6 +34,15 @@ const App = () => {
     tempTasks.splice(indexToUpdate, 1);
     setTasks(tempTasks);
     removeTaskData(task);
+  };
+
+  // function to do google auth and get user data back from firebase
+  const handleSignInWithGoogle = () => {
+    const response = signInWithGoogle();
+
+    if (response instanceof UserType) {
+      setDisplayName(response.userDisplayName);
+    }
   };
 
   return (
