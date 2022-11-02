@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const SignupComponent = () => {
   return (
     <div
@@ -20,6 +22,7 @@ const SignupComponent = () => {
         Re-enter password
         <input type="password" />
       </div>
+      <Link to="/">Click here to login normally</Link>
     </div>
   );
 };

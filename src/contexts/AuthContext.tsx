@@ -1,7 +1,17 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { signInWithGoogle } from "../utils/firebase";
 
 const UserAuthContext = createContext(undefined);
+
+export const UserAuthContextProvider = ({ children }) => {
+  return (
+    <UserAuthContext.Provider value={}>{children}</UserAuthContext.Provider>
+  );
+};
+
+export const useUserAuth = () => {
+  return useContext(UserAuthContext);
+};
 
 // const AuthContext = ({ children }) => {
 //   const [user, setUser] = useState({});

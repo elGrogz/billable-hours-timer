@@ -3,6 +3,7 @@
 //   writeTaskData,
 //   removeTaskData,
 // } from "./utils/firebase";
+import { Link } from "react-router-dom";
 
 const LoginComponent = () => {
   return (
@@ -23,7 +24,7 @@ const LoginComponent = () => {
         <input type="password" />
       </div>
       <button>Click here for Google fun</button>
-      <button>Click here for for old school signup</button>
+      <Link to="/signup">Click here for for old school signup</Link>
     </div>
   );
 };
