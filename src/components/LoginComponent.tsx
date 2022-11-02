@@ -6,9 +6,24 @@
 
 const LoginComponent = () => {
   return (
-    <div>
-      {/* <button onClick={handleSignInWithGoogle}>Sign in!</button> */}
+    <div
+      style={{
+        display: "inline-flex",
+        flexDirection: "column",
+        marginTop: 5,
+      }}
+    >
       Login
+      <div>
+        Enter Username
+        <input type="text" />
+      </div>
+      <div>
+        Enter password
+        <input type="password" />
+      </div>
+      <button>Click here for Google fun</button>
+      <button>Click here for for old school signup</button>
     </div>
   );
 };
