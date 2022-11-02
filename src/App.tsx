@@ -1,26 +1,17 @@
-import { useState } from "react";
-import Task from "./components/Task";
 import "./App.css";
-import { TaskType } from "./types/TaskType";
-import {
-  signInWithGoogle,
-  writeTaskData,
-  removeTaskData,
-} from "./utils/firebase";
-import { User } from "firebase/auth";
-import { isUser } from "./types/UserType";
 import { Routes, Route } from "react-router-dom";
 import TaskContainer from "./components/TaskContainer";
+import SignupComponent from "./components/SignupComponent";
+import LoginComponent from "./components/LoginComponent";
 
 const App = () => {
   return (
     <div>
-      {/* <Routes> */}
-      {/* <Route path="/" element={<LoginComponent />} />
-        <button onClick={handleSignInWithGoogle}>Sign in!</button>
-        <button onClick={() => addNewTask()}>Add new task</button> */}
-      <TaskContainer />
-      {/* </Routes> */}
+      <Routes>
+        <Route path="/" element={<LoginComponent />} />
+        <Route path="/signup" element={<SignupComponent />} />
+        <Route path="/tasks" element={<TaskContainer />} />
+      </Routes>
     </div>
   );
 };
