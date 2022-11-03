@@ -1,11 +1,41 @@
-import { createContext, useContext, useState } from "react";
-import { signInWithGoogle } from "../utils/firebase";
+import { createContext, useContext, useEffect, useState } from "react";
+// import { signInWithGoogle } from "../utils/firebase";
+import {
+  GoogleAuthProvider,
+  getAuth,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  signOut,
+  User,
+} from "firebase/auth";
+import { auth } from "../utils/firebase";
 
-const UserAuthContext = createContext(undefined);
+const UserAuthContext = createContext<User | null>(null);
 
-export const UserAuthContextProvider = ({ children }) => {
+interface ContextProps {
+  children: React.ReactNode;
+}
+
+export const UserAuthContextProvider: React.FC<ContextProps> = ({
+  children,
+}) => {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
   return (
-    <UserAuthContext.Provider value={}>{children}</UserAuthContext.Provider>
+    <UserAuthContext.Provider value={user}>{children}</UserAuthContext.Provider>
   );
 };
 

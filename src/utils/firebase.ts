@@ -33,7 +33,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
-const auth = getAuth(app);
+export const auth = getAuth(app);
 // const analytics = getAnalytics(app);
 
 const googleProvider = new GoogleAuthProvider();
@@ -74,6 +74,26 @@ export const signInWithGoogle = async (): Promise<User | undefined> => {
         reject(undefined);
       });
   });
+};
+
+export const createAccount = async (email: string, password: string) => {
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const loginToAccount = async (email: string, password: string) => {
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const signOutFromGoogle = async () => {
+  await signOut(auth);
 };
 
 export const writeTaskData = (task: TaskType) => {

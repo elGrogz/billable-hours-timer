@@ -3,11 +3,15 @@
 //   writeTaskData,
 //   removeTaskData,
 // } from "./utils/firebase";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const LoginComponent = () => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
   return (
-    <div
+    <form
       style={{
         display: "inline-flex",
         flexDirection: "column",
@@ -25,7 +29,7 @@ const LoginComponent = () => {
       </div>
       <button>Click here for Google fun</button>
       <Link to="/signup">Click here for for old school signup</Link>
-    </div>
+    </form>
   );
 };
 
