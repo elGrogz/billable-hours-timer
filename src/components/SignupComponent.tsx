@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { createAccount } from "../utils/firebase";
 
-const SignupComponent = () => {
+const SignupComponent: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -23,6 +23,7 @@ const SignupComponent = () => {
         display: "inline-flex",
         flexDirection: "column",
         marginTop: 5,
+        marginBottom: 20,
       }}
     >
       Signup
@@ -42,8 +43,8 @@ const SignupComponent = () => {
         <input type="password" />
       </div>
       {error && <h2>Error! {error}</h2>}
+      <button onClick={handleSubmit}>Submit username and password</button>
       <Link to="/">Click here to login normally</Link>
-      <button onClick={handleSubmit}></button>
     </form>
   );
 };

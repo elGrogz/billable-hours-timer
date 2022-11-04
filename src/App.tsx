@@ -6,7 +6,7 @@ import LoginComponent from "./components/LoginComponent";
 import { useUserAuth, UserAuthContextProvider } from "./contexts/AuthContext";
 import { signOutFromGoogle } from "./utils/firebase";
 
-const App = () => {
+const App: React.FC = () => {
   const user = useUserAuth();
 
   return (
