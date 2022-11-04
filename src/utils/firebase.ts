@@ -40,7 +40,7 @@ const googleProvider = new GoogleAuthProvider();
 
 export const loginWithGoogle = (): Promise<User | undefined> => {
   return new Promise((resolve, reject) => {
-    signInWithPopup(auth, googleProvider)
+    return signInWithPopup(auth, googleProvider)
       .then((result) => {
         console.log("result", result);
         const user = result.user;
@@ -49,59 +49,74 @@ export const loginWithGoogle = (): Promise<User | undefined> => {
         const userEmail = result.user.email;
         const userPhotoUrl = result.user.photoURL;
 
-        get(child(ref(database), `users/${user.uid}`)).then((snapshot) => {
-          if (snapshot.exists()) {
-            console.log("user already exists: ", snapshot.val());
+        get(child(ref(database), `users/${user.uid}`))
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              console.log("user already exists: ", snapshot.val());
 
-            resolve(user);
-          } else {
-            console.log("No data available");
-            console.log("user displayname: ", userDisplayName);
-            console.log("user email: ", userEmail);
-            console.log("user photo: ", userPhotoUrl);
-            set(ref(database, `users/${userUid}`), {
-              provider: result.providerId,
-              displayName: userDisplayName,
-              email: userEmail,
-              photoUrl: userPhotoUrl,
-            });
+              resolve(user);
+            } else {
+              console.log("No data available");
+              console.log("user displayname: ", userDisplayName);
+              console.log("user email: ", userEmail);
+              console.log("user photo: ", userPhotoUrl);
+              set(ref(database, `users/${userUid}`), {
+                provider: result.providerId,
+                displayName: userDisplayName,
+                email: userEmail,
+                photoUrl: userPhotoUrl,
+              });
 
-            resolve(user);
-          }
-        });
+              resolve(user);
+            }
+          })
+          .catch((error) => {
+            console.log("Error getting existing google user", error);
+            reject(error);
+          });
       })
       .catch((error) => {
-        console.log(error);
-        reject(undefined);
+        console.log("Error logging in with google: ", error);
+        reject(error);
       });
   });
 };
 
 export const createAccount = async (email: string, password: string) => {
   return new Promise((resolve, reject) => {
-    createUserWithEmailAndPassword(auth, email, password).then((result) => {
-      console.log("result", result);
-      const user = result.user;
-      const userUid = result.user.uid;
-      const userDisplayName = result.user.displayName;
-      const userEmail = result.user.email;
-      const userPhotoUrl = result.user.photoURL;
+    return createUserWithEmailAndPassword(auth, email, password)
+      .then((result) => {
+        console.log("result", result);
+        const user = result.user;
+        const userUid = result.user.uid;
+        const userDisplayName = result.user.displayName;
+        const userEmail = result.user.email;
+        const userPhotoUrl = result.user.photoURL;
 
-      get(child(ref(database), `users/${user.uid}`)).then((snapshot) => {
-        if (snapshot.exists()) {
-          console.log("snapshot: ", snapshot.val);
+        get(child(ref(database), `users/${user.uid}`))
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              console.log("snapshot: ", snapshot.val);
 
-          resolve(user);
-        } else {
-          set(ref(database, `users/${user.uid}`), {
-            provider: "normal_login",
-            displayName: userEmail,
-            email: userEmail,
-            photoUrl: userPhotoUrl,
+              resolve(user);
+            } else {
+              set(ref(database, `users/${user.uid}`), {
+                provider: "normal_login",
+                displayName: userEmail,
+                email: userEmail,
+                photoUrl: userPhotoUrl,
+              });
+            }
+          })
+          .catch((error) => {
+            console.log("Error getting existing normal user: ", error);
+            reject(error);
           });
-        }
+      })
+      .catch((error) => {
+        console.log("Error creating normal user:", error);
+        reject(error);
       });
-    });
   });
 };
 

@@ -7,14 +7,17 @@ const SignupComponent: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = (event: any) => {
     event.preventDefault();
     setError("");
-    try {
-      await createAccount(email, password);
-    } catch (error: any) {
-      setError(error.message);
-    }
+    createAccount(email, password)
+      .then((response) => {
+        console.log("response from signup: ", response);
+      })
+      .catch((error) => {
+        console.log("Error submitting normal user", error);
+        setError(error.message);
+      });
   };
 
   return (
