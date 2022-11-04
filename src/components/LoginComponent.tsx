@@ -5,18 +5,28 @@
 // } from "./utils/firebase";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { loginToAccount, signInWithGoogle } from "../utils/firebase";
+import { loginToAccount, loginWithGoogle } from "../utils/firebase";
 
 const LoginComponent: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
 
-  const handleSubmit = async (event: any) => {
+  const handleNormalLoginSubmit = async (event: any) => {
     event.preventDefault();
     setError("");
     try {
       await loginToAccount(email, password);
+    } catch (error: any) {
+      setError(error.message);
+    }
+  };
+
+  const handleGoogleLoginSubmit = async (event: any) => {
+    event.preventDefault();
+    setError("");
+    try {
+      await loginWithGoogle();
     } catch (error: any) {
       setError(error.message);
     }
@@ -42,8 +52,10 @@ const LoginComponent: React.FC = () => {
           onChange={(event) => setPassword(event.target.value)}
         />
       </div>
-      <button onClick={handleSubmit}>Sign in</button>
-      <button onClick={signInWithGoogle}>Sign in with with Google</button>
+      <button onClick={handleNormalLoginSubmit}>Sign in</button>
+      <button onClick={handleGoogleLoginSubmit}>
+        Sign in with with Google
+      </button>
       <Link to="/signup">Click here for for old school signup</Link>
     </form>
   );

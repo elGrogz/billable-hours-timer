@@ -38,7 +38,7 @@ export const auth = getAuth(app);
 
 const googleProvider = new GoogleAuthProvider();
 
-export const signInWithGoogle = async (): Promise<User | undefined> => {
+export const loginWithGoogle = (): Promise<User | undefined> => {
   return new Promise((resolve, reject) => {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
@@ -60,6 +60,7 @@ export const signInWithGoogle = async (): Promise<User | undefined> => {
             console.log("user email: ", userEmail);
             console.log("user photo: ", userPhotoUrl);
             set(ref(database, `users/${userUid}`), {
+              provider: result.providerId,
               displayName: userDisplayName,
               email: userEmail,
               photoUrl: userPhotoUrl,
@@ -77,11 +78,31 @@ export const signInWithGoogle = async (): Promise<User | undefined> => {
 };
 
 export const createAccount = async (email: string, password: string) => {
-  try {
-    await createUserWithEmailAndPassword(auth, email, password);
-  } catch (error) {
-    console.log(error);
-  }
+  return new Promise((resolve, reject) => {
+    createUserWithEmailAndPassword(auth, email, password).then((result) => {
+      console.log("result", result);
+      const user = result.user;
+      const userUid = result.user.uid;
+      const userDisplayName = result.user.displayName;
+      const userEmail = result.user.email;
+      const userPhotoUrl = result.user.photoURL;
+
+      get(child(ref(database), `users/${user.uid}`)).then((snapshot) => {
+        if (snapshot.exists()) {
+          console.log("snapshot: ", snapshot.val);
+
+          resolve(user);
+        } else {
+          set(ref(database, `users/${user.uid}`), {
+            provider: "normal_login",
+            displayName: userEmail,
+            email: userEmail,
+            photoUrl: userPhotoUrl,
+          });
+        }
+      });
+    });
+  });
 };
 
 export const loginToAccount = async (email: string, password: string) => {
