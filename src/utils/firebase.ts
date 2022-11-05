@@ -95,6 +95,7 @@ export const createAccount = async (email: string, password: string) => {
           .then((snapshot) => {
             if (snapshot.exists()) {
               console.log("snapshot: ", snapshot.val);
+              resolve(user);
             } else {
               set(ref(database, `users/${user.uid}`), {
                 provider: "normal_login",
@@ -103,13 +104,13 @@ export const createAccount = async (email: string, password: string) => {
                 photoUrl: userPhotoUrl,
               });
             }
+
+            resolve(user);
           })
           .catch((error) => {
             console.log("Error getting existing normal user: ", error);
             reject(error);
           });
-
-        resolve(user);
       })
       .catch((error) => {
         console.log("Error creating normal user:", error);

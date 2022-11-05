@@ -1,16 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-// import { signInWithGoogle } from "../utils/firebase";
-import {
-  GoogleAuthProvider,
-  getAuth,
-  signInWithPopup,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  sendPasswordResetEmail,
-  signOut,
-  User,
-} from "firebase/auth";
+import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "../utils/firebase";
 
 const UserAuthContext = createContext<User | null>(null);
@@ -26,6 +15,7 @@ export const UserAuthContextProvider: React.FC<ContextProps> = ({
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log("auth state changed: ", currentUser);
       setUser(currentUser);
     });
 

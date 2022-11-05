@@ -29,11 +29,13 @@ const LoginComponent: React.FC = () => {
   const handleGoogleLoginSubmit = async (event: any) => {
     event.preventDefault();
     setError("");
-    try {
-      await loginWithGoogle();
-    } catch (error: any) {
-      setError(error.message);
-    }
+    loginWithGoogle()
+      .then(() => {
+        navigate("/tasks");
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
   };
 
   return (
