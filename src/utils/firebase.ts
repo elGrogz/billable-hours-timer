@@ -88,8 +88,6 @@ export const createAccount = async (email: string, password: string) => {
       .then((result) => {
         console.log("result", result);
         const user = result.user;
-        const userUid = result.user.uid;
-        const userDisplayName = result.user.displayName;
         const userEmail = result.user.email;
         const userPhotoUrl = result.user.photoURL;
 
@@ -97,8 +95,6 @@ export const createAccount = async (email: string, password: string) => {
           .then((snapshot) => {
             if (snapshot.exists()) {
               console.log("snapshot: ", snapshot.val);
-
-              resolve(user);
             } else {
               set(ref(database, `users/${user.uid}`), {
                 provider: "normal_login",
@@ -112,6 +108,8 @@ export const createAccount = async (email: string, password: string) => {
             console.log("Error getting existing normal user: ", error);
             reject(error);
           });
+
+        resolve(user);
       })
       .catch((error) => {
         console.log("Error creating normal user:", error);
@@ -120,12 +118,17 @@ export const createAccount = async (email: string, password: string) => {
   });
 };
 
-export const loginToAccount = async (email: string, password: string) => {
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-  } catch (error) {
-    console.log(error);
-  }
+export const loginToAccount = (email: string, password: string) => {
+  return new Promise((resolve, reject) => {
+    return signInWithEmailAndPassword(auth, email, password)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        console.error(error);
+        reject(error);
+      });
+  });
 };
 
 export const signOutFromGoogle = async () => {

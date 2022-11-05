@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { createAccount } from "../utils/firebase";
 
 const SignupComponent: React.FC = () => {
@@ -7,12 +7,15 @@ const SignupComponent: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
 
+  const navigate = useNavigate();
+
   const handleSubmit = (event: any) => {
     event.preventDefault();
     setError("");
     createAccount(email, password)
       .then((response) => {
         console.log("response from signup: ", response);
+        navigate("/");
       })
       .catch((error) => {
         console.log("Error submitting normal user", error);
@@ -45,7 +48,7 @@ const SignupComponent: React.FC = () => {
         Re-enter password
         <input type="password" />
       </div>
-      {error && <h2>Error! {error}</h2>}
+      {error && <div style={{ color: "red" }}>Error! {error}</div>}
       <button onClick={handleSubmit}>Submit username and password</button>
       <Link to="/">Click here to login normally</Link>
     </form>
