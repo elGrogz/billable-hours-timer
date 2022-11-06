@@ -1,5 +1,5 @@
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import TaskContainer from "./components/TaskContainer";
 import SignupComponent from "./components/SignupComponent";
 import LoginComponent from "./components/LoginComponent";
@@ -11,10 +11,13 @@ import { auth } from "./utils/firebase";
 
 const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("user: ", user);
-  });
+    if (user === null) {
+      navigate("/");
+    }
+  }, [user]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -36,9 +39,12 @@ const App: React.FC = () => {
           {user && <button onClick={signOutFromGoogle}>Sign out!</button>}
         </div>
         <Routes>
-          <Route path="/" element={<LoginComponent />} />
+          {user ? (
+            <Route path="/tasks" element={<TaskContainer />} />
+          ) : (
+            <Route path="/" element={<LoginComponent />} />
+          )}
           <Route path="/signup" element={<SignupComponent />} />
-          <Route path="/tasks" element={<TaskContainer />} />
         </Routes>
       </UserAuthContextProvider>
     </div>
