@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "./utils/firebase";
 
-const App: React.FC = () => {
+const App = () => {
   // const [user, setUser] = useState<User | null>(null);
   const user = useUserAuth();
   const navigate = useNavigate();
@@ -34,7 +34,9 @@ const App: React.FC = () => {
   return (
     <UserAuthContextProvider>
       <div>
-        {user ?? <button onClick={signOutFromGoogle}>Sign out!</button>}
+        {user?.user ? (
+          <button onClick={signOutFromGoogle}>Sign out!</button>
+        ) : null}
       </div>
       <Routes>
         {/* {user ? ( */}

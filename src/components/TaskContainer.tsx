@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUserAuth } from "../contexts/AuthContext";
 import { TaskType } from "../types/TaskType";
 import {
   removeTaskData,
@@ -10,6 +11,7 @@ import Task from "./Task";
 
 const TaskContainer = () => {
   const [tasks, setTasks] = useState<TaskType[]>([]);
+  const user = useUserAuth();
   const navigate = useNavigate();
 
   const addNewTask = (): void => {
@@ -48,14 +50,26 @@ const TaskContainer = () => {
             ))
           : null}
       </div>
-      <button
+      {/* <button
         onClick={() => {
           signOutFromGoogle();
           navigate("/");
         }}
       >
         Sign out
-      </button>
+      </button> */}
+      <div>
+        {user?.user ? (
+          <button
+            onClick={() => {
+              signOutFromGoogle();
+              navigate("/");
+            }}
+          >
+            Sign out!
+          </button>
+        ) : null}
+      </div>
     </div>
   );
 };
