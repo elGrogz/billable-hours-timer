@@ -50,14 +50,6 @@ const TaskContainer = () => {
             ))
           : null}
       </div>
-      {/* <button
-        onClick={() => {
-          signOutFromGoogle();
-          navigate("/");
-        }}
-      >
-        Sign out
-      </button> */}
       <div>
         {user?.user ? (
           <button
