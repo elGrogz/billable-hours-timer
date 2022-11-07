@@ -2,16 +2,20 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "../utils/firebase";
 
-const UserAuthContext = createContext<User | null>(null);
-
 interface ContextProps {
   children: React.ReactNode;
 }
 
+type AppUser = User | null;
+type ContextState = { user: AppUser };
+
+const userAuthContext = createContext<ContextState | null>(null);
+
 export const UserAuthContextProvider: React.FC<ContextProps> = ({
   children,
 }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AppUser>(null);
+  const value = { user };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -25,12 +29,14 @@ export const UserAuthContextProvider: React.FC<ContextProps> = ({
   }, []);
 
   return (
-    <UserAuthContext.Provider value={user}>{children}</UserAuthContext.Provider>
+    <userAuthContext.Provider value={value}>
+      {children}
+    </userAuthContext.Provider>
   );
 };
 
 export const useUserAuth = () => {
-  return useContext(UserAuthContext);
+  return useContext(userAuthContext);
 };
 
 // const AuthContext = ({ children }) => {

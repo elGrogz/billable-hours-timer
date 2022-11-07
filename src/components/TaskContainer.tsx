@@ -1,10 +1,16 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { TaskType } from "../types/TaskType";
-import { removeTaskData, writeTaskData } from "../utils/firebase";
+import {
+  removeTaskData,
+  signOutFromGoogle,
+  writeTaskData,
+} from "../utils/firebase";
 import Task from "./Task";
 
 const TaskContainer = () => {
   const [tasks, setTasks] = useState<TaskType[]>([]);
+  const navigate = useNavigate();
 
   const addNewTask = (): void => {
     const blankTask: TaskType = {
@@ -42,6 +48,14 @@ const TaskContainer = () => {
             ))
           : null}
       </div>
+      <button
+        onClick={() => {
+          signOutFromGoogle();
+          navigate("/");
+        }}
+      >
+        Sign out
+      </button>
     </div>
   );
 };

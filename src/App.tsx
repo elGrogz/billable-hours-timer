@@ -10,44 +10,41 @@ import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "./utils/firebase";
 
 const App: React.FC = () => {
-  const [user, setUser] = useState<User | null>(null);
+  // const [user, setUser] = useState<User | null>(null);
+  const user = useUserAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (user === null) {
-      navigate("/");
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user === null) {
+  //     navigate("/");
+  //   }
+  // }, [user]);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log("auth state changed: ", currentUser);
-      setUser(currentUser);
-    });
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+  //     console.log("auth state changed: ", currentUser);
+  //     setUser(currentUser);
+  //   });
 
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
-  // const user = useUserAuth();
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, []);
 
   return (
-    <div>
-      <UserAuthContextProvider>
-        <div>
-          {user && <button onClick={signOutFromGoogle}>Sign out!</button>}
-        </div>
-        <Routes>
-          {user ? (
-            <Route path="/tasks" element={<TaskContainer />} />
-          ) : (
-            <Route path="/" element={<LoginComponent />} />
-          )}
-          <Route path="/signup" element={<SignupComponent />} />
-        </Routes>
-      </UserAuthContextProvider>
-    </div>
+    <UserAuthContextProvider>
+      <div>
+        {user ?? <button onClick={signOutFromGoogle}>Sign out!</button>}
+      </div>
+      <Routes>
+        {/* {user ? ( */}
+        <Route path="/tasks" element={<TaskContainer />} />
+        {/* ) : ( */}
+        <Route path="/" element={<LoginComponent />} />
+        {/* )} */}
+        <Route path="/signup" element={<SignupComponent />} />
+      </Routes>
+    </UserAuthContextProvider>
   );
 };
 
