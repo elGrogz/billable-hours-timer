@@ -44,10 +44,6 @@ const SignupComponent: React.FC = () => {
           onChange={(event) => setPassword(event.target.value)}
         />
       </div>
-      <div>
-        Re-enter password
-        <input type="password" />
-      </div>
       {error && <div style={{ color: "red" }}>Error! {error}</div>}
       <button onClick={handleSubmit}>Submit username and password</button>
       <Link to="/">Click here to login normally</Link>

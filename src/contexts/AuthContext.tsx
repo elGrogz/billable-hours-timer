@@ -7,15 +7,15 @@ interface ContextProps {
 }
 
 type AppUser = User | null;
-type ContextState = { user: AppUser };
+// type ContextState = { user: AppUser };
 
-const userAuthContext = createContext<ContextState | null>(null);
+const userAuthContext = createContext<User | null>(null);
 
 export const UserAuthContextProvider: React.FC<ContextProps> = ({
   children,
 }) => {
   const [user, setUser] = useState<AppUser>(null);
-  const value = { user };
+  // const value = { user };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -29,9 +29,7 @@ export const UserAuthContextProvider: React.FC<ContextProps> = ({
   }, []);
 
   return (
-    <userAuthContext.Provider value={value}>
-      {children}
-    </userAuthContext.Provider>
+    <userAuthContext.Provider value={user}>{children}</userAuthContext.Provider>
   );
 };
 

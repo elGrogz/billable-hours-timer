@@ -37,6 +37,7 @@ const TaskContainer = () => {
 
   return (
     <div>
+      <h2>{user?.email}</h2>
       <button onClick={() => addNewTask()}>Add new task</button>
       <div>
         {tasks.length > 0
@@ -51,7 +52,7 @@ const TaskContainer = () => {
           : null}
       </div>
       <div>
-        {user?.user ? (
+        {user ? (
           <button
             onClick={() => {
               signOutFromGoogle();

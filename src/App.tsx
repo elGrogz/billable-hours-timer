@@ -4,14 +4,22 @@ import TaskContainer from "./components/TaskContainer";
 import SignupComponent from "./components/SignupComponent";
 import LoginComponent from "./components/LoginComponent";
 import { UserAuthContextProvider } from "./contexts/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   return (
     <UserAuthContextProvider>
       <Routes>
-        <Route path="/tasks" element={<TaskContainer />} />
         <Route path="/" element={<LoginComponent />} />
         <Route path="/signup" element={<SignupComponent />} />
+        <Route
+          path="/tasks"
+          element={
+            <ProtectedRoute>
+              <TaskContainer />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </UserAuthContextProvider>
   );
