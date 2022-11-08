@@ -38,26 +38,3 @@ export const UserAuthContextProvider: React.FC<ContextProps> = ({
 export const useUserAuth = () => {
   return useContext(userAuthContext);
 };
-
-// const AuthContext = ({ children }) => {
-//   const [user, setUser] = useState({});
-
-//   // function to do google auth and get user data back from firebase
-//   const handleSignInWithGoogle = async () => {
-//     console.log("ONE");
-//     const response = await signInWithGoogle();
-//     console.log("TWO");
-
-// if (isUser(response)) {
-//   console.log("THREE");
-//   setDisplayName(response.displayName);
-//   console.log("FOUR");
-// }
-// };
-
-// return (
-// <UserAuthContext.Provider value={{ user, handleSignInWithGoogle }}>
-//   {children}
-// </UserAuthContext.Provider>
-// );
-// };

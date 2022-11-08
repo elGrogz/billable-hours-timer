@@ -15,7 +15,7 @@ const SignupComponent: React.FC = () => {
     createAccount(email, password)
       .then((response) => {
         console.log("response from signup: ", response);
-        navigate("/");
+        navigate("/tasks");
       })
       .catch((error) => {
         console.log("Error submitting normal user", error);

@@ -1,8 +1,3 @@
-// import {
-//   signInWithGoogle,
-//   writeTaskData,
-//   removeTaskData,
-// } from "./utils/firebase";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginToAccount, loginWithGoogle } from "../utils/firebase";
@@ -18,7 +13,7 @@ const LoginComponent: React.FC = () => {
     event.preventDefault();
     setError("");
     loginToAccount(email, password)
-      .then((response) => {
+      .then(() => {
         navigate("/tasks");
       })
       .catch((error) => {

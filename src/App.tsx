@@ -9,11 +9,8 @@ const App = () => {
   return (
     <UserAuthContextProvider>
       <Routes>
-        {/* {user ? ( */}
         <Route path="/tasks" element={<TaskContainer />} />
-        {/* ) : ( */}
         <Route path="/" element={<LoginComponent />} />
-        {/* )} */}
         <Route path="/signup" element={<SignupComponent />} />
       </Routes>
     </UserAuthContextProvider>
