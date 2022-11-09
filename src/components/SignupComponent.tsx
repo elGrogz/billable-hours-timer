@@ -26,10 +26,13 @@ const SignupComponent: React.FC = () => {
   return (
     <form
       style={{
-        display: "inline-flex",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         flexDirection: "column",
-        marginTop: 5,
-        marginBottom: 20,
+        height: "100vh",
+        // marginTop: 5,
+        // marginBottom: 20,
       }}
     >
       Signup
