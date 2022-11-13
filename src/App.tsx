@@ -8,20 +8,26 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   return (
-    <UserAuthContextProvider>
-      <Routes>
-        <Route path="/" element={<LoginComponent />} />
-        <Route path="/signup" element={<SignupComponent />} />
-        <Route
-          path="/tasks"
-          element={
-            <ProtectedRoute>
-              <TaskContainer />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </UserAuthContextProvider>
+    <div
+      style={{
+        backgroundColor: "tomato",
+      }}
+    >
+      <UserAuthContextProvider>
+        <Routes>
+          <Route path="/" element={<LoginComponent />} />
+          <Route path="/signup" element={<SignupComponent />} />
+          <Route
+            path="/tasks"
+            element={
+              <ProtectedRoute>
+                <TaskContainer />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </UserAuthContextProvider>
+    </div>
   );
 };
 
