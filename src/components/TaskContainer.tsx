@@ -8,6 +8,7 @@ import {
   writeTaskData,
 } from "../utils/firebase";
 import Task from "./Task";
+import UserHeader from "./UserHeader";
 
 const TaskContainer = () => {
   const [tasks, setTasks] = useState<TaskType[]>([]);
@@ -37,7 +38,7 @@ const TaskContainer = () => {
 
   return (
     <div>
-      <h2>{user?.email}</h2>
+      <UserHeader />
       <button onClick={() => addNewTask()}>Add new task</button>
       <div>
         {tasks.length > 0
