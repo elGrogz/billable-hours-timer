@@ -6,6 +6,8 @@ const LoginComponent: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [googleButtonHoverState, setGoogleButtonHoverState] =
+    useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -31,6 +33,14 @@ const LoginComponent: React.FC = () => {
       .catch((error) => {
         setError(error.message);
       });
+  };
+
+  const handleGoogleMouseEnter = () => {
+    setGoogleButtonHoverState(true);
+  };
+
+  const handleGoogleMouseLeave = () => {
+    setGoogleButtonHoverState(false);
   };
 
   return (
@@ -77,12 +87,15 @@ const LoginComponent: React.FC = () => {
         <div
           style={{
             marginBottom: 5,
+            backgroundColor: googleButtonHoverState ? "tomato" : "white",
             margin: 10,
             padding: 10,
             border: "medium solid black",
             borderRadius: 5,
             boxShadow: "4px 4px 2px 1px rgba(0, 0, 0, 0.2)",
           }}
+          onMouseEnter={handleGoogleMouseEnter}
+          onMouseLeave={handleGoogleMouseLeave}
           onClick={handleGoogleLoginSubmit}
         >
           Sign in with with Google
