@@ -24,33 +24,50 @@ const SignupComponent: React.FC = () => {
   };
 
   return (
-    <form
+    <div
       style={{
         display: "flex",
         justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
+        alignContent: "center",
         height: "100vh",
       }}
     >
-      <h1>Signup</h1>
-      <div style={{ marginBottom: 5 }}>
-        Choose username
-        <input type="text" onChange={(event) => setEmail(event.target.value)} />
-      </div>
-      <div style={{ marginBottom: 10 }}>
-        Choose password
-        <input
-          type="password"
-          onChange={(event) => setPassword(event.target.value)}
-        />
-      </div>
-      {error && <div style={{ color: "red", marginBottom: 5 }}>{error}</div>}
-      <button style={{ marginBottom: 5 }} onClick={handleSubmit}>
-        Submit
-      </button>
-      <Link to="/">Back to login</Link>
-    </form>
+      <form
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          alignSelf: "center",
+          flexDirection: "column",
+          padding: 5,
+          border: "medium solid black",
+          borderRadius: 5,
+          boxShadow: "4px 4px 2px 1px rgba(0, 0, 0, 0.2)",
+        }}
+      >
+        <h1>Signup</h1>
+        <div style={{ marginBottom: 5 }}>
+          Choose username
+          <input
+            style={{ marginLeft: 5 }}
+            type="text"
+            onChange={(event) => setEmail(event.target.value)}
+          />
+        </div>
+        <div style={{ marginBottom: 10 }}>
+          Choose password
+          <input
+            style={{ marginLeft: 5 }}
+            type="password"
+            onChange={(event) => setPassword(event.target.value)}
+          />
+        </div>
+        {error && <div style={{ color: "red", marginBottom: 5 }}>{error}</div>}
+        <button style={{ marginBottom: 5 }} onClick={handleSubmit}>
+          Submit
+        </button>
+        <Link to="/">Back to Login</Link>
+      </form>
+    </div>
   );
 };
 
