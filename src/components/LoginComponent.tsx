@@ -36,33 +36,33 @@ const LoginComponent: React.FC = () => {
   return (
     <form
       style={{
-        // display: "inline-flex",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
         height: "100vh",
-        marginTop: 5,
       }}
     >
-      Login
-      <div>
+      <h1>Login</h1>
+      <div style={{ marginBottom: 5 }}>
         Enter Username
         <input type="text" onChange={(event) => setEmail(event.target.value)} />
       </div>
-      <div>
+      <div style={{ marginBottom: 10 }}>
         Enter password
         <input
           type="password"
           onChange={(event) => setPassword(event.target.value)}
         />
       </div>
-      <button onClick={handleNormalLoginSubmit}>Sign in</button>
-      <button onClick={handleGoogleLoginSubmit}>
+      {error && <div style={{ color: "red" }}>{error}</div>}
+      <button style={{ marginBottom: 5 }} onClick={handleNormalLoginSubmit}>
+        Sign in
+      </button>
+      <button style={{ marginBottom: 5 }} onClick={handleGoogleLoginSubmit}>
         Sign in with with Google
       </button>
-      <Link to="/signup">Click here for for old school signup</Link>
-      {error && <div style={{ color: "red" }}>OH NO! {error}</div>}
+      <Link to="/signup">Create account</Link>
     </form>
   );
 };

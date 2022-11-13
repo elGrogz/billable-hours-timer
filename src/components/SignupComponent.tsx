@@ -31,25 +31,25 @@ const SignupComponent: React.FC = () => {
         alignItems: "center",
         flexDirection: "column",
         height: "100vh",
-        // marginTop: 5,
-        // marginBottom: 20,
       }}
     >
-      Signup
-      <div>
-        Enter Username
+      <h1>Signup</h1>
+      <div style={{ marginBottom: 5 }}>
+        Choose username
         <input type="text" onChange={(event) => setEmail(event.target.value)} />
       </div>
-      <div>
-        Enter password
+      <div style={{ marginBottom: 10 }}>
+        Choose password
         <input
           type="password"
           onChange={(event) => setPassword(event.target.value)}
         />
       </div>
-      {error && <div style={{ color: "red" }}>Error! {error}</div>}
-      <button onClick={handleSubmit}>Submit username and password</button>
-      <Link to="/">Click here to login normally</Link>
+      {error && <div style={{ color: "red", marginBottom: 5 }}>{error}</div>}
+      <button style={{ marginBottom: 5 }} onClick={handleSubmit}>
+        Submit
+      </button>
+      <Link to="/">Back to login</Link>
     </form>
   );
 };
