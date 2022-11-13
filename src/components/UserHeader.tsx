@@ -5,6 +5,8 @@ import { signOutFromGoogle } from "../utils/firebase";
 
 const UserHeader = () => {
   const [userImage, setUserImage] = useState<string | null | undefined>("");
+  const [signoutButtonHoverState, setSignoutButtonHoverState] =
+    useState<boolean>(false);
 
   const user = useUserAuth();
   const navigate = useNavigate();
@@ -13,11 +15,18 @@ const UserHeader = () => {
     setUserImage(user?.photoURL);
   }, []);
 
+  const handleSignoutMouseEnter = () => {
+    setSignoutButtonHoverState(true);
+  };
+
+  const handleSignoutMouseLeave = () => {
+    setSignoutButtonHoverState(false);
+  };
+
   return (
     <div
       style={{ display: "flex", justifyContent: "right", alignItems: "center" }}
     >
-      <h4>{user?.email}</h4>
       {userImage && (
         <img
           style={{
@@ -29,16 +38,29 @@ const UserHeader = () => {
           src={userImage}
         />
       )}
+      <h4>{user?.email}</h4>
       <div>
         {user ? (
-          <button
+          <div
+            style={{
+              borderRadius: 5,
+              marginInline: 5,
+              backgroundColor: signoutButtonHoverState ? "tomato" : "white",
+              textAlign: "center",
+              alignItems: "center",
+              padding: 10,
+              border: "medium solid black",
+              boxShadow: "4px 4px 2px 1px rgba(0, 0, 0, 0.2)",
+            }}
+            onMouseEnter={handleSignoutMouseEnter}
+            onMouseLeave={handleSignoutMouseLeave}
             onClick={() => {
               signOutFromGoogle();
               navigate("/");
             }}
           >
             Sign out!
-          </button>
+          </div>
         ) : null}
       </div>
     </div>

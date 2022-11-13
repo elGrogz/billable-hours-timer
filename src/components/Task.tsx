@@ -45,9 +45,11 @@ const Task = (props: TimerProps) => {
         style={{
           display: "inline-flex",
           flexDirection: "row",
-          marginTop: 5,
+          marginBlock: 2,
+          marginLeft: 5,
+          padding: 10,
           border: "5px solid",
-          borderRadius: "50px",
+          borderRadius: "5px",
         }}
       >
         <input

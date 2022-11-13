@@ -37,9 +37,14 @@ const TaskContainer = () => {
   };
 
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column" }}>
       <UserHeader />
-      <button onClick={() => addNewTask()}>Add new task</button>
+      <button
+        style={{ alignSelf: "center", marginBlock: 10 }}
+        onClick={() => addNewTask()}
+      >
+        Add new task
+      </button>
       <div>
         {tasks.length > 0
           ? tasks.map((task, index) => (
