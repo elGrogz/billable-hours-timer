@@ -52,18 +52,6 @@ const TaskContainer = () => {
             ))
           : null}
       </div>
-      <div>
-        {user ? (
-          <button
-            onClick={() => {
-              signOutFromGoogle();
-              navigate("/");
-            }}
-          >
-            Sign out!
-          </button>
-        ) : null}
-      </div>
     </div>
   );
 };

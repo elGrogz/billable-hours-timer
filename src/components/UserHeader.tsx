@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useUserAuth } from "../contexts/AuthContext";
+import { signOutFromGoogle } from "../utils/firebase";
 
 const UserHeader = () => {
   const [userImage, setUserImage] = useState<string | null | undefined>("");
 
   const user = useUserAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setUserImage(user?.photoURL);
@@ -14,7 +17,7 @@ const UserHeader = () => {
     <div
       style={{ display: "flex", justifyContent: "right", alignItems: "center" }}
     >
-      <h5>{user?.email}</h5>
+      <h4>{user?.email}</h4>
       {userImage && (
         <img
           style={{
@@ -26,6 +29,18 @@ const UserHeader = () => {
           src={userImage}
         />
       )}
+      <div>
+        {user ? (
+          <button
+            onClick={() => {
+              signOutFromGoogle();
+              navigate("/");
+            }}
+          >
+            Sign out!
+          </button>
+        ) : null}
+      </div>
     </div>
   );
 };
