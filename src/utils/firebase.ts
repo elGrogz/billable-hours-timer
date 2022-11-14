@@ -12,7 +12,7 @@ import {
 } from "firebase/auth";
 import { getDatabase, get, ref, set, child } from "firebase/database";
 import { TaskType } from "../types/TaskType";
-
+import { v4 as uuidv4 } from "uuid";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -137,7 +137,8 @@ export const signOutFromGoogle = async () => {
 };
 
 export const writeTaskData = (task: TaskType) => {
-  set(ref(database, "tasks/" + task.id), {
+  const taskId = uuidv4();
+  set(ref(database, "tasks/" + taskId), {
     name: task.name,
     time: task.time,
   });
