@@ -25,7 +25,12 @@ const UserHeader = () => {
 
   return (
     <div
-      style={{ display: "flex", justifyContent: "right", alignItems: "center" }}
+      style={{
+        display: "flex",
+        justifyContent: "right",
+        alignItems: "center",
+        backgroundColor: "white",
+      }}
     >
       {userImage && (
         <img

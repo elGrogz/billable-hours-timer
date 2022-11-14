@@ -50,6 +50,7 @@ const Task = (props: TimerProps) => {
           padding: 10,
           border: "5px solid",
           borderRadius: "5px",
+          backgroundColor: "white",
         }}
       >
         <input

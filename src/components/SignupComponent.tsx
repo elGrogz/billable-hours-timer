@@ -42,6 +42,7 @@ const SignupComponent: React.FC = () => {
           border: "medium solid black",
           borderRadius: 5,
           boxShadow: "4px 4px 2px 1px rgba(0, 0, 0, 0.2)",
+          backgroundColor: "white",
         }}
       >
         <h1>Signup</h1>
