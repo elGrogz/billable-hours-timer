@@ -10,7 +10,7 @@ import {
   signOut,
   User,
 } from "firebase/auth";
-import { getDatabase, get, ref, set, child } from "firebase/database";
+import { getDatabase, get, ref, set, child, update } from "firebase/database";
 import { TaskType } from "../types/TaskType";
 import { v4 as uuidv4 } from "uuid";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -53,7 +53,6 @@ export const loginWithGoogle = (): Promise<User | undefined> => {
           .then((snapshot) => {
             if (snapshot.exists()) {
               console.log("user already exists: ", snapshot.val());
-
               resolve(user);
             } else {
               console.log("No data available");
@@ -139,6 +138,13 @@ export const signOutFromGoogle = async () => {
 export const writeTaskData = (task: TaskType) => {
   const taskId = uuidv4();
   set(ref(database, "tasks/" + taskId), {
+    name: task.name,
+    time: task.time,
+  });
+};
+
+export const updateTaskStopwatch = (task: TaskType) => {
+  update(ref(database),"tasks/" + taskId), {
     name: task.name,
     time: task.time,
   });
