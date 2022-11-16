@@ -143,12 +143,11 @@ export const writeTaskData = (task: TaskType) => {
   });
 };
 
-export const updateTaskStopwatch = (task: TaskType) => {
-  update(ref(database),"tasks/" + taskId), {
-    name: task.name,
-    time: task.time,
-  });
-};
+// export const updateTaskStopwatch = (task: TaskType) => {
+//   update(ref(database), "tasks/" + taskId), {
+//     time: task.time,
+//   });
+// };
 
 export const removeTaskData = (task: TaskType) => {
   set(ref(database, "tasks/" + task.id), null);
