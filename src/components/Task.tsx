@@ -53,13 +53,13 @@ const Task = (props: TimerProps) => {
           backgroundColor: "white",
         }}
       >
-        <input
+        {/* <input
           maxLength={25}
           onChange={(event: React.ChangeEvent<HTMLInputElement>): void =>
             setTaskName(event.target.value)
           }
           placeholder="Enter task name..."
-        ></input>
+        ></input> */}
         <div style={{ width: 200 }}>{taskName}</div>
         <div className="stopwatch">
           <div className="numbers">

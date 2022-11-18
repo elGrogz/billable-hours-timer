@@ -11,21 +11,27 @@ import Task from "./Task";
 import UserHeader from "./UserHeader";
 
 const TaskContainer = () => {
+  const [newTaskName, setNewTaskName] = useState<string>("");
   const [tasks, setTasks] = useState<TaskType[]>([]);
   const user = useUserAuth();
   const navigate = useNavigate();
 
+  const handleTaskNameChange = (name: string): void => {
+    setNewTaskName(name);
+  };
+
   const addNewTask = (): void => {
-    const blankTask: TaskType = {
+    const newTask: TaskType = {
       key: Date.now(),
-      name: "",
+      name: newTaskName,
       time: 0,
     };
 
-    let tempTasks = [...tasks];
-    tempTasks.push(blankTask);
+    let tempTasks = [...tasks]; // change this to fetch tasks from database
+    tempTasks.push(newTask);
     setTasks(tempTasks);
-    writeTaskData(blankTask);
+    writeTaskData(newTask, user);
+    setNewTaskName("");
   };
 
   const removeTask = (task: TaskType) => {
@@ -39,6 +45,21 @@ const TaskContainer = () => {
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <UserHeader />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          gap: 5,
+        }}
+      >
+        <h2>New taskname: </h2>
+        <input
+          maxLength={25}
+          onChange={(event) => handleTaskNameChange(event.target.value)}
+          placeholder="Enter task name..."
+        />
+      </div>
       <button
         style={{ alignSelf: "center", marginBlock: 10 }}
         onClick={() => addNewTask()}
