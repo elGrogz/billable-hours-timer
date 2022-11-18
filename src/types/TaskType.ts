@@ -1,5 +1,5 @@
 export interface TaskType {
-  id: number;
+  key: number;
   name: string | undefined;
   time: 0;
 }

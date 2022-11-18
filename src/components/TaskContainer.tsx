@@ -17,7 +17,7 @@ const TaskContainer = () => {
 
   const addNewTask = (): void => {
     const blankTask: TaskType = {
-      id: Date.now(),
+      key: Date.now(),
       name: "",
       time: 0,
     };

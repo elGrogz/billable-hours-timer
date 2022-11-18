@@ -11,6 +11,7 @@ import {
   User,
 } from "firebase/auth";
 import { getDatabase, get, ref, set, child, update } from "firebase/database";
+import { addDoc, collection, getFirestore } from "firebase/firestore";
 import { TaskType } from "../types/TaskType";
 import { v4 as uuidv4 } from "uuid";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -32,7 +33,8 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
+// const database = getDatabase(app);
+const db = getFirestore(app);
 export const auth = getAuth(app);
 // const analytics = getAnalytics(app);
 
@@ -44,35 +46,33 @@ export const loginWithGoogle = (): Promise<User | undefined> => {
       .then((result) => {
         console.log("result", result);
         const user = result.user;
-        const userUid = result.user.uid;
-        const userDisplayName = result.user.displayName;
-        const userEmail = result.user.email;
-        const userPhotoUrl = result.user.photoURL;
 
-        get(child(ref(database), `users/${user.uid}`))
-          .then((snapshot) => {
-            if (snapshot.exists()) {
-              console.log("user already exists: ", snapshot.val());
-              resolve(user);
-            } else {
-              console.log("No data available");
-              console.log("user displayname: ", userDisplayName);
-              console.log("user email: ", userEmail);
-              console.log("user photo: ", userPhotoUrl);
-              set(ref(database, `users/${userUid}`), {
-                provider: result.providerId,
-                displayName: userDisplayName,
-                email: userEmail,
-                photoUrl: userPhotoUrl,
-              });
+        resolve(user);
 
-              resolve(user);
-            }
-          })
-          .catch((error) => {
-            console.log("Error getting existing google user", error);
-            reject(error);
-          });
+        // get(child(ref(database), `users/${user.uid}`))
+        //   .then((snapshot) => {
+        //     if (snapshot.exists()) {
+        //       console.log("user already exists: ", snapshot.val());
+        //       resolve(user);
+        //     } else {
+        //       console.log("No data available");
+        //       console.log("user displayname: ", userDisplayName);
+        //       console.log("user email: ", userEmail);
+        //       console.log("user photo: ", userPhotoUrl);
+        //       set(ref(database, `users/${userUid}`), {
+        //         provider: result.providerId,
+        //         displayName: userDisplayName,
+        //         email: userEmail,
+        //         photoUrl: userPhotoUrl,
+        //       });
+
+        //       resolve(user);
+        //     }
+        //   })
+        //   .catch((error) => {
+        //     console.log("Error getting existing google user", error);
+        //     reject(error);
+        //   });
       })
       .catch((error) => {
         console.log("Error logging in with google: ", error);
@@ -87,29 +87,29 @@ export const createAccount = async (email: string, password: string) => {
       .then((result) => {
         console.log("result", result);
         const user = result.user;
-        const userEmail = result.user.email;
-        const userPhotoUrl = result.user.photoURL;
 
-        get(child(ref(database), `users/${user.uid}`))
-          .then((snapshot) => {
-            if (snapshot.exists()) {
-              console.log("snapshot: ", snapshot.val);
-              resolve(user);
-            } else {
-              set(ref(database, `users/${user.uid}`), {
-                provider: "normal_login",
-                displayName: userEmail,
-                email: userEmail,
-                photoUrl: userPhotoUrl,
-              });
-            }
+        resolve(user);
 
-            resolve(user);
-          })
-          .catch((error) => {
-            console.log("Error getting existing normal user: ", error);
-            reject(error);
-          });
+        //   get(child(ref(database), `users/${user.uid}`))
+        //     .then((snapshot) => {
+        //       if (snapshot.exists()) {
+        //         console.log("snapshot: ", snapshot.val);
+        //         resolve(user);
+        //       } else {
+        //         set(ref(database, `users/${user.uid}`), {
+        //           provider: "normal_login",
+        //           displayName: userEmail,
+        //           email: userEmail,
+        //           photoUrl: userPhotoUrl,
+        //         });
+        //       }
+
+        //       resolve(user);
+        //     })
+        //     .catch((error) => {
+        //       console.log("Error getting existing normal user: ", error);
+        //       reject(error);
+        //     });
       })
       .catch((error) => {
         console.log("Error creating normal user:", error);
@@ -135,12 +135,22 @@ export const signOutFromGoogle = async () => {
   await signOut(auth);
 };
 
-export const writeTaskData = (task: TaskType) => {
-  const taskId = uuidv4();
-  set(ref(database, "tasks/" + taskId), {
-    name: task.name,
-    time: task.time,
-  });
+export const writeTaskData = async (task: TaskType) => {
+  // const taskId = uuidv4();
+  // set(ref(database, "tasks/" + taskId), {
+  //   name: task.name,
+  //   time: task.time,
+  // });
+  try {
+    const docRef = await addDoc(collection(db, "tasks"), {
+      key: task.key,
+      name: task.name,
+      time: task.time,
+    });
+    console.log("Doc written with id: ", docRef.id);
+  } catch (error) {
+    console.error("Error adding task doc: ", error);
+  }
 };
 
 // export const updateTaskStopwatch = (task: TaskType) => {
@@ -150,5 +160,5 @@ export const writeTaskData = (task: TaskType) => {
 // };
 
 export const removeTaskData = (task: TaskType) => {
-  set(ref(database, "tasks/" + task.id), null);
+  // set(ref(database, "tasks/" + task.id), null);
 };

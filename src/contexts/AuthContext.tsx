@@ -15,7 +15,6 @@ export const UserAuthContextProvider: React.FC<ContextProps> = ({
   children,
 }) => {
   const [user, setUser] = useState<AppUser>(null);
-  // const value = { user };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
