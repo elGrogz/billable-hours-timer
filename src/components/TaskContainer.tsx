@@ -27,7 +27,7 @@ const TaskContainer = () => {
       time: 0,
     };
 
-    let tempTasks = [...tasks]; // change this to fetch tasks from database
+    let tempTasks = [...tasks]; // change this to fetch tasks from database and use useEffect?
     tempTasks.push(newTask);
     setTasks(tempTasks);
     writeTaskData(newTask, user);
@@ -50,7 +50,7 @@ const TaskContainer = () => {
           display: "flex",
           flexDirection: "row",
           justifyContent: "center",
-          gap: 5,
+          gap: 10,
         }}
       >
         <h2>New taskname: </h2>
