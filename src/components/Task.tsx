@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { TaskType } from "../types/TaskType";
+import { removeTaskData } from "../utils/firebase";
 
 type Props = {
   handleRemoveTask: () => void;
@@ -7,7 +8,7 @@ type Props = {
 };
 
 const Task = (props: any) => {
-  const [taskName, setTaskName] = useState<string>("");
+  const [taskName, setTaskName] = useState<string>(props.data.name);
   const [isActive, setIsActive] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(true);
   const [time, setTime] = useState<number>(0);
@@ -26,6 +27,10 @@ const Task = (props: any) => {
       clearInterval(interval);
     };
   }, [isActive, isPaused]);
+
+  const handleRemoveTask = () => {
+    removeTaskData(props.data.uid);
+  };
 
   const handleStartStopwatch = () => {
     setIsActive(true);
@@ -56,13 +61,6 @@ const Task = (props: any) => {
           gap: 5,
         }}
       >
-        {/* <input
-          maxLength={25}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>): void =>
-            setTaskName(event.target.value)
-          }
-          placeholder="Enter task name..."
-        ></input> */}
         <div style={{ width: 200 }}>{props.data.name}</div>
         <div className="stopwatch">
           <div className="numbers">
@@ -71,7 +69,7 @@ const Task = (props: any) => {
             <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}</span>
           </div>
         </div>
-        <button onClick={props.handleRemoveTask}>Remove task</button>
+        <button onClick={handleRemoveTask}>Remove task</button>
         <button onClick={handleStartStopwatch}>Start Timer</button>
         <button onClick={handlePauseStopwatch}>Pause Timer</button>
         <button onClick={handleTimerReset}>Reset Timer</button>

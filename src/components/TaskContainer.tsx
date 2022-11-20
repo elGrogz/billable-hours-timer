@@ -36,9 +36,6 @@ const TaskContainer = () => {
       time: 0,
     };
 
-    // let tempTasks = [...tasks]; // change this to fetch tasks from database and use useEffect?
-    // tempTasks.push(newTask);
-    // setTasks(tempTasks);
     writeTaskData(newTask, user);
     setNewTaskName("");
   };
@@ -46,14 +43,6 @@ const TaskContainer = () => {
   useEffect(() => {
     console.table(tasks);
   }, [tasks]);
-
-  // const removeTask = (task: TaskType) => {
-  //   const indexToUpdate = tasks.indexOf(task);
-  //   let tempTasks = [...tasks];
-  //   tempTasks.splice(indexToUpdate, 1);
-  //   setTasks(tempTasks);
-  //   removeTaskData(task);
-  // };
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -66,8 +55,11 @@ const TaskContainer = () => {
           gap: 10,
         }}
       >
-        <h2>New taskname: </h2>
+        <h3>New taskname: </h3>
         <input
+          style={{
+            maxHeight: 30,
+          }}
           maxLength={25}
           onChange={(event) => handleTaskNameChange(event.target.value)}
           placeholder="Enter task name..."
@@ -81,15 +73,7 @@ const TaskContainer = () => {
       </button>
       <div>
         {tasks && tasks.length > 0
-          ? tasks.map((task, index) => (
-              <Task
-                key={index}
-                handleRemoveTask={() => {
-                  // removeTask(task);
-                }}
-                data={task}
-              />
-            ))
+          ? tasks.map((task, index) => <Task key={index} data={task} />)
           : null}
       </div>
     </div>

@@ -13,7 +13,8 @@ import {
 import {
   addDoc,
   collection,
-  Firestore,
+  deleteDoc,
+  doc,
   getDocs,
   getFirestore,
   query,
@@ -128,4 +129,6 @@ export const getTaskListForUser = async (userId: string) => {
   // return taskListQuery;
 };
 
-export const removeTaskData = (task: TaskType) => {};
+export const removeTaskData = async (userId: number) => {
+  await deleteDoc(doc(db, "tasks", userId.toString()));
+};
