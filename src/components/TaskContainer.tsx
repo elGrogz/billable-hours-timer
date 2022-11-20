@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserAuth } from "../contexts/AuthContext";
 import { TaskType } from "../types/TaskType";
 import {
+  getTaskListForUser,
   removeTaskData,
   signOutFromGoogle,
   writeTaskData,
@@ -20,19 +21,26 @@ const TaskContainer = () => {
     setNewTaskName(name);
   };
 
-  const addNewTask = (): void => {
+  const addNewTask = async () => {
     const newTask: TaskType = {
       key: Date.now(),
       name: newTaskName,
       time: 0,
     };
 
-    let tempTasks = [...tasks]; // change this to fetch tasks from database and use useEffect?
-    tempTasks.push(newTask);
-    setTasks(tempTasks);
+    // let tempTasks = [...tasks]; // change this to fetch tasks from database and use useEffect?
+    // tempTasks.push(newTask);
+    // setTasks(tempTasks);
     writeTaskData(newTask, user);
     setNewTaskName("");
   };
+
+  useEffect(() => {
+    console.log("hello before");
+    if (user) {
+      getTaskListForUser(user?.uid);
+    }
+  }, [tasks, addNewTask]);
 
   const removeTask = (task: TaskType) => {
     const indexToUpdate = tasks.indexOf(task);
@@ -62,7 +70,7 @@ const TaskContainer = () => {
       </div>
       <button
         style={{ alignSelf: "center", marginBlock: 10 }}
-        onClick={() => addNewTask()}
+        onClick={addNewTask}
       >
         Add new task
       </button>

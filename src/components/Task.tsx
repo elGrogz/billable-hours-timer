@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-type TimerProps = {
+type Props = {
   handleRemoveTask: () => void;
 };
 
-const Task = (props: TimerProps) => {
+const Task = (props: Props) => {
   const [taskName, setTaskName] = useState<string>("");
   const [isActive, setIsActive] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(true);
@@ -51,6 +51,7 @@ const Task = (props: TimerProps) => {
           border: "5px solid",
           borderRadius: "5px",
           backgroundColor: "white",
+          gap: 5,
         }}
       >
         {/* <input
