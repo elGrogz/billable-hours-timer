@@ -1,8 +1,11 @@
+import { collection, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useNavigate } from "react-router-dom";
 import { useUserAuth } from "../contexts/AuthContext";
 import { TaskType } from "../types/TaskType";
 import {
+  db,
   getTaskListForUser,
   removeTaskData,
   signOutFromGoogle,
@@ -13,9 +16,14 @@ import UserHeader from "./UserHeader";
 
 const TaskContainer = () => {
   const [newTaskName, setNewTaskName] = useState<string>("");
-  const [tasks, setTasks] = useState<TaskType[]>([]);
+  // const [tasks, setTasks] = useState<TaskType[]>([]);
   const user = useUserAuth();
   const navigate = useNavigate();
+
+  const tasksRef = collection(db, "tasks");
+
+  const taskListQuery = query(tasksRef, where("userId", "==", user?.uid));
+  const [tasks] = useCollectionData(taskListQuery);
 
   const handleTaskNameChange = (name: string): void => {
     setNewTaskName(name);
@@ -36,19 +44,16 @@ const TaskContainer = () => {
   };
 
   useEffect(() => {
-    console.log("hello before");
-    if (user) {
-      getTaskListForUser(user?.uid);
-    }
-  }, [tasks, addNewTask]);
+    console.table(tasks);
+  }, [tasks]);
 
-  const removeTask = (task: TaskType) => {
-    const indexToUpdate = tasks.indexOf(task);
-    let tempTasks = [...tasks];
-    tempTasks.splice(indexToUpdate, 1);
-    setTasks(tempTasks);
-    removeTaskData(task);
-  };
+  // const removeTask = (task: TaskType) => {
+  //   const indexToUpdate = tasks.indexOf(task);
+  //   let tempTasks = [...tasks];
+  //   tempTasks.splice(indexToUpdate, 1);
+  //   setTasks(tempTasks);
+  //   removeTaskData(task);
+  // };
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -75,13 +80,14 @@ const TaskContainer = () => {
         Add new task
       </button>
       <div>
-        {tasks.length > 0
+        {tasks && tasks.length > 0
           ? tasks.map((task, index) => (
               <Task
                 key={index}
                 handleRemoveTask={() => {
-                  removeTask(task);
+                  // removeTask(task);
                 }}
+                data={task}
               />
             ))
           : null}

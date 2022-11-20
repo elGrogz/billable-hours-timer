@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { TaskType } from "../types/TaskType";
 
 type Props = {
   handleRemoveTask: () => void;
+  data: TaskType;
 };
 
-const Task = (props: Props) => {
+const Task = (props: any) => {
   const [taskName, setTaskName] = useState<string>("");
   const [isActive, setIsActive] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(true);
@@ -61,7 +63,7 @@ const Task = (props: Props) => {
           }
           placeholder="Enter task name..."
         ></input> */}
-        <div style={{ width: 200 }}>{taskName}</div>
+        <div style={{ width: 200 }}>{props.data.name}</div>
         <div className="stopwatch">
           <div className="numbers">
             <span>{("0" + Math.floor((time / 86400000) % 24)).slice(-2)}:</span>

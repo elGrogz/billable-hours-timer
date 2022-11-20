@@ -13,6 +13,7 @@ import {
 import {
   addDoc,
   collection,
+  Firestore,
   getDocs,
   getFirestore,
   query,
@@ -20,6 +21,7 @@ import {
   where,
 } from "firebase/firestore";
 import { TaskType } from "../types/TaskType";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -39,7 +41,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+export const db = getFirestore(app);
 export const auth = getAuth(app);
 
 const googleProvider = new GoogleAuthProvider();
@@ -110,20 +112,20 @@ export const writeTaskData = async (
 };
 
 export const getTaskListForUser = async (userId: string) => {
-  console.log("hello");
-  const taskListQuery = query(
-    collection(db, "tasks"),
-    where("userId", "==", userId)
-  );
-
-  const querySnapshot = await getDocs(taskListQuery);
-
-  // querySnapshot.forEach((doc) => {
-  //   console.log(doc.data());
-  // });
-
-  const taskData = querySnapshot.docs;
-  return taskData;
+  // console.log("hello");
+  // const taskListQuery = query(
+  //   collection(db, "tasks"),
+  //   where("userId", "==", userId)
+  // );
+  // const querySnapshot = await getDocs(taskListQuery);
+  // // querySnapshot.forEach((doc) => {
+  // //   console.log(doc.data());
+  // // });
+  // const taskData = querySnapshot.docs;
+  // // return taskData;
+  // const tasksRef = collection(db, "tasks");
+  // const taskListQuery = query(tasksRef, where("userId", "==", userId));
+  // return taskListQuery;
 };
 
 export const removeTaskData = (task: TaskType) => {};
