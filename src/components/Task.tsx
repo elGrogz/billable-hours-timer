@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { collection, deleteDoc, doc } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import { TaskType } from "../types/TaskType";
-import { removeTaskData } from "../utils/firebase";
+import { db } from "../utils/firebase";
 
 type Props = {
   handleRemoveTask: () => void;
@@ -28,8 +29,11 @@ const Task = (props: any) => {
     };
   }, [isActive, isPaused]);
 
-  const handleRemoveTask = () => {
-    removeTaskData(props.data.uid);
+  const collectionRef = collection(db, "tasks");
+
+  const handleRemoveTask = async (event: any) => {
+    event.preventDefault();
+    await deleteDoc(doc(db, "tasks", props.data.uid));
   };
 
   const handleStartStopwatch = () => {
@@ -69,7 +73,9 @@ const Task = (props: any) => {
             <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}</span>
           </div>
         </div>
-        <button onClick={handleRemoveTask}>Remove task</button>
+        <button onClick={(event) => handleRemoveTask(event)}>
+          Remove task
+        </button>
         <button onClick={handleStartStopwatch}>Start Timer</button>
         <button onClick={handlePauseStopwatch}>Pause Timer</button>
         <button onClick={handleTimerReset}>Reset Timer</button>

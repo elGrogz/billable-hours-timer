@@ -6,23 +6,11 @@ import {
   signInWithPopup,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  sendPasswordResetEmail,
   signOut,
   User,
 } from "firebase/auth";
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  getFirestore,
-  query,
-  QuerySnapshot,
-  where,
-} from "firebase/firestore";
+import { addDoc, collection, getFirestore } from "firebase/firestore";
 import { TaskType } from "../types/TaskType";
-import { useCollectionData } from "react-firebase-hooks/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -99,7 +87,7 @@ export const signOutFromGoogle = async () => {
 export const writeTaskData = async (
   task: TaskType,
   user: User | null
-): Promise<void> => {
+): Promise<string | undefined> => {
   try {
     const docRef = await addDoc(collection(db, "tasks"), {
       name: task.name,
@@ -107,28 +95,8 @@ export const writeTaskData = async (
       userId: user?.uid,
     });
     console.log("Doc written with id: ", docRef.id);
+    return docRef.id;
   } catch (error) {
     console.error("Error adding task doc: ", error);
   }
-};
-
-export const getTaskListForUser = async (userId: string) => {
-  // console.log("hello");
-  // const taskListQuery = query(
-  //   collection(db, "tasks"),
-  //   where("userId", "==", userId)
-  // );
-  // const querySnapshot = await getDocs(taskListQuery);
-  // // querySnapshot.forEach((doc) => {
-  // //   console.log(doc.data());
-  // // });
-  // const taskData = querySnapshot.docs;
-  // // return taskData;
-  // const tasksRef = collection(db, "tasks");
-  // const taskListQuery = query(tasksRef, where("userId", "==", userId));
-  // return taskListQuery;
-};
-
-export const removeTaskData = async (userId: number) => {
-  await deleteDoc(doc(db, "tasks", userId.toString()));
 };

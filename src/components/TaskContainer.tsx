@@ -4,13 +4,7 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useNavigate } from "react-router-dom";
 import { useUserAuth } from "../contexts/AuthContext";
 import { TaskType } from "../types/TaskType";
-import {
-  db,
-  getTaskListForUser,
-  removeTaskData,
-  signOutFromGoogle,
-  writeTaskData,
-} from "../utils/firebase";
+import { db, writeTaskData } from "../utils/firebase";
 import Task from "./Task";
 import UserHeader from "./UserHeader";
 
