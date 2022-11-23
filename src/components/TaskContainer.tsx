@@ -35,6 +35,12 @@ const TaskContainer = () => {
   };
 
   useEffect(() => {
+    console.log("stuff goes here");
+
+    // https://blog.openreplay.com/build-a-crud-app-with-react-and-firebase/
+  });
+
+  useEffect(() => {
     console.table(tasks);
   }, [tasks]);
 
