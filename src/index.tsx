@@ -9,8 +9,13 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
+  // identifies unsafe lifecycles, unexpected side effects etc
   <React.StrictMode>
+    {/* Sets up the app to use routes (basically pages) which are used in the browser (not server side) 
+      The page never refreshes, but the URL keeps up to date with the routes 
+    */}
     <Router>
+      {/* Renders app component */}
       <App />
     </Router>
   </React.StrictMode>
