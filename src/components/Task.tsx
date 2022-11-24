@@ -29,11 +29,9 @@ const Task = (props: any) => {
     };
   }, [isActive, isPaused]);
 
-  const collectionRef = collection(db, "tasks");
-
   const handleRemoveTask = async (event: any) => {
     event.preventDefault();
-    await deleteDoc(doc(db, "tasks", props.data.uid));
+    await deleteDoc(doc(db, "tasks", props.data.id));
   };
 
   const handleStartStopwatch = () => {

@@ -1,4 +1,10 @@
-import { collection, query, where } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  query,
+  QuerySnapshot,
+  where,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useNavigate } from "react-router-dom";
@@ -10,14 +16,14 @@ import UserHeader from "./UserHeader";
 
 const TaskContainer = () => {
   const [newTaskName, setNewTaskName] = useState<string>("");
-  const [taskList, setTasks] = useState<TaskType[]>([]);
+  const [taskList, setTaskList] = useState<TaskType[]>([]);
   const user = useUserAuth();
   const navigate = useNavigate();
 
-  const tasksRef = collection(db, "tasks");
+  // const tasksRef = collection(db, "tasks");
 
-  const taskListQuery = query(tasksRef, where("userId", "==", user?.uid));
-  const [tasks] = useCollectionData(taskListQuery);
+  // const taskListQuery = query(tasksRef, where("userId", "==", user?.uid));
+  // const [tasks] = useCollectionData(taskListQuery);
 
   const handleTaskNameChange = (name: string): void => {
     setNewTaskName(name);
@@ -35,14 +41,26 @@ const TaskContainer = () => {
   };
 
   useEffect(() => {
-    console.log("stuff goes here");
+    const tasksQuery = query(
+      collection(db, "tasks"),
+      where("userId", "==", user?.uid)
+    );
+    const unsubscribe = onSnapshot(tasksQuery, (snapshot) => {
+      let tasksArray: any[] = [];
+      snapshot.forEach((doc) => {
+        tasksArray.push({ ...doc.data(), id: doc.id });
+      });
+      setTaskList(tasksArray);
+    });
+
+    return () => unsubscribe();
 
     // https://blog.openreplay.com/build-a-crud-app-with-react-and-firebase/
-  });
+  }, []);
 
   useEffect(() => {
-    console.table(tasks);
-  }, [tasks]);
+    console.table(taskList);
+  }, [taskList]);
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -72,8 +90,8 @@ const TaskContainer = () => {
         Add new task
       </button>
       <div>
-        {tasks && tasks.length > 0
-          ? tasks.map((task, index) => <Task key={index} data={task} />)
+        {taskList && taskList.length > 0
+          ? taskList.map((task, index) => <Task key={index} data={task} />)
           : null}
       </div>
     </div>
