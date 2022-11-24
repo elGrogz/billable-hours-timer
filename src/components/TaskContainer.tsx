@@ -1,12 +1,5 @@
-import {
-  collection,
-  onSnapshot,
-  query,
-  QuerySnapshot,
-  where,
-} from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useNavigate } from "react-router-dom";
 import { useUserAuth } from "../contexts/AuthContext";
 import { TaskType } from "../types/TaskType";
@@ -19,11 +12,6 @@ const TaskContainer = () => {
   const [taskList, setTaskList] = useState<TaskType[]>([]);
   const user = useUserAuth();
   const navigate = useNavigate();
-
-  // const tasksRef = collection(db, "tasks");
-
-  // const taskListQuery = query(tasksRef, where("userId", "==", user?.uid));
-  // const [tasks] = useCollectionData(taskListQuery);
 
   const handleTaskNameChange = (name: string): void => {
     setNewTaskName(name);

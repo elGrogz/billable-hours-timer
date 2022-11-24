@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc } from "firebase/firestore";
+import { deleteDoc, doc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { TaskType } from "../types/TaskType";
 import { db } from "../utils/firebase";
@@ -12,15 +12,24 @@ const Task = (props: any) => {
   const [taskName, setTaskName] = useState<string>(props.data.name);
   const [isActive, setIsActive] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(true);
-  const [time, setTime] = useState<number>(0);
+  const [totalTimeRecorded, setTotalTimeRecorded] = useState<number>(0);
 
   useEffect(() => {
+    // change timer to use time stamps
+    // record each start and stop time
+
+    // isActive
+    // setStartTime
+    // {
+    //   setTime;
+    // }
+
     let interval: any = null;
 
     if (isActive && isPaused === false) {
       interval = setInterval(() => {
-        setTime((time) => time + 10);
-      }, 10);
+        setTotalTimeRecorded((time) => time + 1000);
+      }, 1000);
     } else {
       clearInterval(interval);
     }
@@ -37,15 +46,17 @@ const Task = (props: any) => {
   const handleStartStopwatch = () => {
     setIsActive(true);
     setIsPaused(false);
+    //setStateTimestamp
   };
 
   const handlePauseStopwatch = () => {
     setIsPaused(true);
     setIsActive(false);
+    //setPausedTimestamp
   };
 
   const handleTimerReset = () => {
-    setTime(0);
+    setTotalTimeRecorded(0);
   };
 
   return (
@@ -66,9 +77,18 @@ const Task = (props: any) => {
         <div style={{ width: 200 }}>{props.data.name}</div>
         <div className="stopwatch">
           <div className="numbers">
-            <span>{("0" + Math.floor((time / 86400000) % 24)).slice(-2)}:</span>
-            <span>{("0" + Math.floor((time / 60000) % 60)).slice(-2)}:</span>
-            <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}</span>
+            <span>
+              {("0" + Math.floor((totalTimeRecorded / 86400000) % 24)).slice(
+                -2
+              )}
+              :
+            </span>
+            <span>
+              {("0" + Math.floor((totalTimeRecorded / 60000) % 60)).slice(-2)}:
+            </span>
+            <span>
+              {("0" + Math.floor((totalTimeRecorded / 1000) % 60)).slice(-2)}
+            </span>
           </div>
         </div>
         <button onClick={(event) => handleRemoveTask(event)}>
