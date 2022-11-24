@@ -1,4 +1,12 @@
-import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  onSnapshot,
+  query,
+  updateDoc,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { TaskType } from "../types/TaskType";
 import { db } from "../utils/firebase";
@@ -13,6 +21,15 @@ const Task = (props: any) => {
   const [isActive, setIsActive] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(true);
   const [totalTimeRecorded, setTotalTimeRecorded] = useState<number>(0);
+
+  useEffect(() => {
+    // const taskRef = doc(db, "tasks", props.data.id)
+    // const docSnap =
+    // const taskQuery = query(collection(db, "tasks", props.data.id));
+    // const unsubscribe = onSnapshot(taskQuery, (querySnapshot() => {
+    //   let doc =
+    // }))
+  }, []);
 
   useEffect(() => {
     // change timer to use time stamps
@@ -46,15 +63,32 @@ const Task = (props: any) => {
   const handleStartStopwatch = async () => {
     setIsActive(true);
     setIsPaused(false);
+
     await updateDoc(doc(db, "tasks", props.data.id), {
       startTimestamp: Date.now(),
     });
   };
 
-  const handlePauseStopwatch = () => {
+  const handlePauseStopwatch = async () => {
     setIsPaused(true);
     setIsActive(false);
-    //setPausedTimestamp
+
+    await updateDoc(doc(db, "tasks", props.data.id), {
+      endTimestamp: Date.now(),
+    });
+
+    let currentTotalTime = 0;
+
+    const taskRef = doc(db, "tasks", props.data.id);
+    const docSnap = await getDoc(taskRef);
+    if (docSnap.exists()) {
+      console.log(docSnap.data());
+      currentTotalTime = docSnap.data().totalTime;
+    }
+
+    await updateDoc(doc(db, "tasks", props.data.id), {
+      totalTime: currentTotalTime + totalTimeRecorded,
+    });
   };
 
   const handleTimerReset = () => {
