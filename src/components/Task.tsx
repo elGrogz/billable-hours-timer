@@ -1,4 +1,4 @@
-import { deleteDoc, doc } from "firebase/firestore";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { TaskType } from "../types/TaskType";
 import { db } from "../utils/firebase";
@@ -43,10 +43,12 @@ const Task = (props: any) => {
     await deleteDoc(doc(db, "tasks", props.data.id));
   };
 
-  const handleStartStopwatch = () => {
+  const handleStartStopwatch = async () => {
     setIsActive(true);
     setIsPaused(false);
-    //setStateTimestamp
+    await updateDoc(doc(db, "tasks", props.data.id), {
+      startTimestamp: Date.now(),
+    });
   };
 
   const handlePauseStopwatch = () => {
