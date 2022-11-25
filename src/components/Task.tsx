@@ -1,13 +1,4 @@
-import {
-  arrayUnion,
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  onSnapshot,
-  query,
-  updateDoc,
-} from "firebase/firestore";
+import { arrayUnion, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { TaskType } from "../types/TaskType";
 import { db } from "../utils/firebase";
@@ -21,6 +12,7 @@ const Task = (props: any) => {
   const [taskName, setTaskName] = useState<string>(props.data.name);
   const [startTimestamp, setStartTimestamp] = useState<number | null>(null);
   const [endTimestamp, setEndTimestamp] = useState<number | null>(null);
+  const [currentTimeRecorded, setCurrentTimeRecorded] = useState<number>(0);
   const [totalTimeRecorded, setTotalTimeRecorded] = useState<number>(0);
   const [isActive, setIsActive] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(true);
@@ -30,6 +22,7 @@ const Task = (props: any) => {
 
     if (isActive && isPaused === false) {
       interval = setInterval(() => {
+        setCurrentTimeRecorded((time) => time + 1000);
         setTotalTimeRecorded((time) => time + 1000);
       }, 1000);
     } else {
@@ -49,10 +42,6 @@ const Task = (props: any) => {
     setIsActive(true);
     setIsPaused(false);
     setStartTimestamp(Date.now());
-
-    // await updateDoc(doc(db, "tasks", props.data.id), {
-    //   startTimestamp: Date.now(),
-    // });
   };
 
   const handlePauseStopwatch = async () => {
@@ -67,7 +56,7 @@ const Task = (props: any) => {
   };
 
   const handleTimerReset = () => {
-    setTotalTimeRecorded(0);
+    setCurrentTimeRecorded(0);
   };
 
   return (
@@ -89,16 +78,17 @@ const Task = (props: any) => {
         <div className="stopwatch">
           <div className="numbers">
             <span>
-              {("0" + Math.floor((totalTimeRecorded / 86400000) % 24)).slice(
+              {("0" + Math.floor((currentTimeRecorded / 86400000) % 24)).slice(
                 -2
               )}
               :
             </span>
             <span>
-              {("0" + Math.floor((totalTimeRecorded / 60000) % 60)).slice(-2)}:
+              {("0" + Math.floor((currentTimeRecorded / 60000) % 60)).slice(-2)}
+              :
             </span>
             <span>
-              {("0" + Math.floor((totalTimeRecorded / 1000) % 60)).slice(-2)}
+              {("0" + Math.floor((currentTimeRecorded / 1000) % 60)).slice(-2)}
             </span>
           </div>
         </div>
