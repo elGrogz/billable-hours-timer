@@ -18,29 +18,13 @@ type Props = {
 
 const Task = (props: any) => {
   const [taskName, setTaskName] = useState<string>(props.data.name);
+  const [startTimestamp, setStartTimestamp] = useState<number | null>(null);
+  const [endTimestamp, setEndTimestamp] = useState<number | null>(null);
+  const [totalTimeRecorded, setTotalTimeRecorded] = useState<number>(0);
   const [isActive, setIsActive] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(true);
-  const [totalTimeRecorded, setTotalTimeRecorded] = useState<number>(0);
 
   useEffect(() => {
-    // const taskRef = doc(db, "tasks", props.data.id)
-    // const docSnap =
-    // const taskQuery = query(collection(db, "tasks", props.data.id));
-    // const unsubscribe = onSnapshot(taskQuery, (querySnapshot() => {
-    //   let doc =
-    // }))
-  }, []);
-
-  useEffect(() => {
-    // change timer to use time stamps
-    // record each start and stop time
-
-    // isActive
-    // setStartTime
-    // {
-    //   setTime;
-    // }
-
     let interval: any = null;
 
     if (isActive && isPaused === false) {
@@ -63,31 +47,31 @@ const Task = (props: any) => {
   const handleStartStopwatch = async () => {
     setIsActive(true);
     setIsPaused(false);
+    setStartTimestamp(Date.now());
 
-    await updateDoc(doc(db, "tasks", props.data.id), {
-      startTimestamp: Date.now(),
-    });
+    // await updateDoc(doc(db, "tasks", props.data.id), {
+    //   startTimestamp: Date.now(),
+    // });
   };
 
   const handlePauseStopwatch = async () => {
     setIsPaused(true);
     setIsActive(false);
-
-    await updateDoc(doc(db, "tasks", props.data.id), {
-      endTimestamp: Date.now(),
-    });
-
-    let currentTotalTime = 0;
+    setEndTimestamp(Date.now());
 
     const taskRef = doc(db, "tasks", props.data.id);
     const docSnap = await getDoc(taskRef);
+    let timestamps;
     if (docSnap.exists()) {
       console.log(docSnap.data());
-      currentTotalTime = docSnap.data().totalTime;
+      timestamps = docSnap.data().timestamps;
     }
 
     await updateDoc(doc(db, "tasks", props.data.id), {
-      totalTime: currentTotalTime + totalTimeRecorded,
+      timestamps: [timestamps, { setStartTimestamp, setEndTimestamp }],
+      totalTime: totalTimeRecorded,
+      // startTimestamp: startTimestamp,
+      // endTimestamp: endTimestamp,
     });
   };
 
