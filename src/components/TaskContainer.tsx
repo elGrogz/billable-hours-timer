@@ -4,17 +4,27 @@ import { useNavigate } from "react-router-dom";
 import { useUserAuth } from "../contexts/AuthContext";
 import { TaskType } from "../types/TaskType";
 import { db, writeTaskData } from "../utils/firebase";
+import ClientModal from "./ClientModal";
 import Task from "./Task";
 import UserHeader from "./UserHeader";
 
 const TaskContainer = () => {
   const [newTaskName, setNewTaskName] = useState<string>("");
   const [taskList, setTaskList] = useState<TaskType[]>([]);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const user = useUserAuth();
   const navigate = useNavigate();
 
   const handleTaskNameChange = (name: string): void => {
     setNewTaskName(name);
+  };
+
+  const handleOpenClientModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseClientModal = () => {
+    setShowModal(false);
   };
 
   const addNewTask = async () => {
@@ -52,6 +62,9 @@ const TaskContainer = () => {
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
+      <ClientModal handleClose={handleCloseClientModal} show={showModal}>
+        Hello
+      </ClientModal>
       <UserHeader />
       <div
         style={{
@@ -70,6 +83,7 @@ const TaskContainer = () => {
           onChange={(event) => handleTaskNameChange(event.target.value)}
           placeholder="Enter task name..."
         />
+        <button onClick={handleOpenClientModal}>Add new client</button>
       </div>
       <button
         style={{ alignSelf: "center", marginBlock: 10 }}
