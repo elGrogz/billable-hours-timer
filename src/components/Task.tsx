@@ -1,4 +1,5 @@
 import {
+  arrayUnion,
   collection,
   deleteDoc,
   doc,
@@ -59,19 +60,9 @@ const Task = (props: any) => {
     setIsActive(false);
     setEndTimestamp(Date.now());
 
-    const taskRef = doc(db, "tasks", props.data.id);
-    const docSnap = await getDoc(taskRef);
-    let timestamps;
-    if (docSnap.exists()) {
-      console.log(docSnap.data());
-      timestamps = docSnap.data().timestamps;
-    }
-
     await updateDoc(doc(db, "tasks", props.data.id), {
-      timestamps: [timestamps, { setStartTimestamp, setEndTimestamp }],
+      timestamps: arrayUnion({ startTimestamp, endTimestamp }),
       totalTime: totalTimeRecorded,
-      // startTimestamp: startTimestamp,
-      // endTimestamp: endTimestamp,
     });
   };
 

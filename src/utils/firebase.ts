@@ -93,6 +93,7 @@ export const writeTaskData = async (
       name: task.name,
       time: task.time,
       userId: user?.uid,
+      timestamps: [],
     });
     console.log("Doc written with id: ", docRef.id);
     return docRef.id;
