@@ -1,4 +1,7 @@
+import { addDoc, collection } from "firebase/firestore";
+import { useState } from "react";
 import { useUserAuth } from "../contexts/AuthContext";
+import { db } from "../utils/firebase";
 
 interface ContextProps {
   closeModal: () => void;
@@ -16,14 +19,30 @@ interface ContextProps {
 // };
 
 const ClientModal: React.FC<ContextProps> = ({ closeModal }) => {
-  const addNewClient = async () => {};
+  const [clientName, setClientName] = useState<string>("string");
 
-  const auth = useUserAuth();
+  const user = useUserAuth();
+
+  const addNewClient = async () => {
+    try {
+      const docRef = await addDoc(collection(db, "tasks"), {
+        client: clientName,
+        userId: user?.uid,
+      });
+      console.log("Client doc written with id: ", docRef.id);
+      return docRef.id;
+    } catch (error) {
+      console.error("Error adding client doc: ", error);
+    }
+  };
 
   return (
     <div>
       Enter Client name:
-      <input type="text" />
+      <input
+        type="text"
+        onChange={(event) => setClientName(event.target.value)}
+      />
       <button onClick={addNewClient}>Add Client</button>
       <button onClick={closeModal}>Close</button>
     </div>
