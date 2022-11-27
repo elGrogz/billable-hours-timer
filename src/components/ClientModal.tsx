@@ -1,4 +1,14 @@
-const ClientModal = ({ handleClose, show, children }) => {
+interface ContextProps {
+  handleClose: () => void;
+  show: boolean;
+  children: React.ReactNode;
+}
+
+const ClientModal: React.FC<ContextProps> = ({
+  handleClose,
+  show,
+  children,
+}) => {
   const showHideClassName = show ? "modal display-block" : "modal display-none";
 
   return (
