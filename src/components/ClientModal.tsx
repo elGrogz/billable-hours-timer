@@ -1,22 +1,21 @@
-interface ContextProps {
-  handleClose: () => void;
-  show: boolean;
-  children: React.ReactNode;
-}
+// interface ContextProps {
+//   handleClose: () => void;
+//   show: boolean;
+//   children: React.ReactNode;
+// }
 
-const ClientModal: React.FC<ContextProps> = ({
-  handleClose,
-  show,
-  children,
-}) => {
-  const showHideClassName = show ? "modal display-block" : "modal display-none";
+const ClientModal: React.FC<any> = (
+  props
+  // handleClose,
+  // show,
+  // children,
+) => {
+  // const showHideClassName = show ? "modal display-block" : "modal display-none";
 
   return (
-    <div className={showHideClassName}>
-      <section className="modal-main">
-        {children}
-        <button onClick={handleClose}>Close</button>
-      </section>
+    <div>
+      Hello
+      <button onClick={props.closeModal}>Close</button>
     </div>
   );
 };

@@ -7,6 +7,8 @@ import { db, writeTaskData } from "../utils/firebase";
 import ClientModal from "./ClientModal";
 import Task from "./Task";
 import UserHeader from "./UserHeader";
+import Modal from "react-modal";
+import ReactModal from "react-modal";
 
 const TaskContainer = () => {
   const [newTaskName, setNewTaskName] = useState<string>("");
@@ -19,11 +21,11 @@ const TaskContainer = () => {
     setNewTaskName(name);
   };
 
-  const handleOpenClientModal = () => {
+  const openClientModal = () => {
     setShowModal(true);
   };
 
-  const handleCloseClientModal = () => {
+  const closeClientModal = () => {
     setShowModal(false);
   };
 
@@ -39,6 +41,8 @@ const TaskContainer = () => {
   };
 
   useEffect(() => {
+    Modal.setAppElement("#root");
+
     const tasksQuery = query(
       collection(db, "tasks"),
       where("userId", "==", user?.uid)
@@ -62,9 +66,13 @@ const TaskContainer = () => {
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
-      <ClientModal handleClose={handleCloseClientModal} show={showModal}>
-        Hello
-      </ClientModal>
+      <Modal
+        isOpen={showModal}
+        onRequestClose={closeClientModal}
+        style={{ content: { maxWidth: "25%", maxHeight: "25%" } }}
+      >
+        <ClientModal closeModal={closeClientModal} />
+      </Modal>
       <UserHeader />
       <div
         style={{
@@ -83,7 +91,7 @@ const TaskContainer = () => {
           onChange={(event) => handleTaskNameChange(event.target.value)}
           placeholder="Enter task name..."
         />
-        <button onClick={handleOpenClientModal}>Add new client</button>
+        <button onClick={openClientModal}>Add new client</button>
       </div>
       <button
         style={{ alignSelf: "center", marginBlock: 10 }}
