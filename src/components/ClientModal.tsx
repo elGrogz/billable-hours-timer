@@ -34,6 +34,8 @@ const ClientModal: React.FC<ContextProps> = ({ closeModal }) => {
     } catch (error) {
       console.error("Error adding client doc: ", error);
     }
+
+    setClientName("");
   };
 
   return (

@@ -71,13 +71,14 @@ const TaskContainer = () => {
       snapshot.forEach((doc) => {
         clientsArray.push({ ...doc.data(), id: doc.id });
       });
-      setTaskList(clientsArray);
+      setClientsList(clientsArray);
     });
 
     return () => unsubscribe();
   }, []);
 
   useEffect(() => {
+    console.table(taskList);
     console.table(taskList);
   }, [taskList]);
 
