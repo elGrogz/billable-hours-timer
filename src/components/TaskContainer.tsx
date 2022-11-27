@@ -13,6 +13,7 @@ import ReactModal from "react-modal";
 const TaskContainer = () => {
   const [newTaskName, setNewTaskName] = useState<string>("");
   const [taskList, setTaskList] = useState<TaskType[]>([]);
+  const [clientsList, setClientsList] = useState<any>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const user = useUserAuth();
   const navigate = useNavigate();
@@ -61,6 +62,22 @@ const TaskContainer = () => {
   }, []);
 
   useEffect(() => {
+    const clientsQuery = query(
+      collection(db, "clients"),
+      where("userId", "==", user?.uid)
+    );
+    const unsubscribe = onSnapshot(clientsQuery, (snapshot) => {
+      let clientsArray: any[] = [];
+      snapshot.forEach((doc) => {
+        clientsArray.push({ ...doc.data(), id: doc.id });
+      });
+      setTaskList(clientsArray);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
     console.table(taskList);
   }, [taskList]);
 
@@ -91,6 +108,11 @@ const TaskContainer = () => {
           onChange={(event) => handleTaskNameChange(event.target.value)}
           placeholder="Enter task name..."
         />
+        <select>
+          {clientsList.map((client: any) => {
+            <option>{client}</option>;
+          })}
+        </select>
         <button onClick={openClientModal}>Add new client</button>
       </div>
       <button
