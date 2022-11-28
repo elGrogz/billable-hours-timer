@@ -67,6 +67,7 @@ const TaskContainer = () => {
       where("userId", "==", user?.uid)
     );
     const unsubscribe = onSnapshot(clientsQuery, (snapshot) => {
+      console.log("-------> " + "new client!");
       let clientsArray: any[] = [];
       snapshot.forEach((doc) => {
         clientsArray.push({ ...doc.data(), id: doc.id });
@@ -110,8 +111,13 @@ const TaskContainer = () => {
           placeholder="Enter task name..."
         />
         <select>
-          {clientsList.map((client: any) => {
-            <option>{client}</option>;
+          {clientsList.map((client: any, index: number) => {
+            {
+              console.log("CLIENT: ", client);
+            }
+            <option key={index} value={client.client}>
+              {client.client}
+            </option>;
           })}
         </select>
         <button onClick={openClientModal}>Add new client</button>

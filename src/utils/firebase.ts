@@ -87,7 +87,7 @@ export const signOutFromGoogle = async () => {
 export const writeTaskData = async (
   task: TaskType,
   user: User | null
-): Promise<string | undefined> => {
+): Promise<void> => {
   try {
     const docRef = await addDoc(collection(db, "tasks"), {
       name: task.name,
@@ -96,7 +96,6 @@ export const writeTaskData = async (
       timestamps: [],
     });
     console.log("Doc written with id: ", docRef.id);
-    return docRef.id;
   } catch (error) {
     console.error("Error adding task doc: ", error);
   }
