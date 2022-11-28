@@ -25,17 +25,17 @@ const ClientModal: React.FC<ContextProps> = ({ closeModal }) => {
 
   const addNewClient = async () => {
     try {
-      const docRef = await addDoc(collection(db, "tasks"), {
+      const docRef = await addDoc(collection(db, "clients"), {
         client: clientName,
         userId: user?.uid,
       });
       console.log("Client doc written with id: ", docRef.id);
-      return docRef.id;
     } catch (error) {
       console.error("Error adding client doc: ", error);
     }
 
     setClientName("");
+    closeModal();
   };
 
   return (
